@@ -44,9 +44,9 @@ class GteEmbedService(GteEmbedServiceImpl):
             if torch.cuda.is_available():
                 torch.cuda.synchronize()
 
-        if torch.cuda.is_available() and keepaliveTask is None:
-            loop = asyncio.get_event_loop()
-            keepaliveTask = loop.create_task(self.GpuKeepAlive())
+        # if torch.cuda.is_available() and keepaliveTask is None:
+        #     loop = asyncio.get_event_loop()
+        #     keepaliveTask = loop.create_task(self.GpuKeepAlive())
 
     def MeanPool(self, lastHidden: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
         m = mask.unsqueeze(-1).expand(lastHidden.size()).float()
