@@ -58,4 +58,5 @@ if __name__ == "__main__":
         workers=1,
         loop="uvloop",
         http="httptools",
+        timeout_keep_alive=30
     )
