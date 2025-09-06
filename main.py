@@ -7,6 +7,8 @@ from fastapi.middleware.gzip import GZipMiddleware
 import torch
 from services import GteEmbedService
 from controllers import EmbedController
+from fastapi.middleware.cors import CORSMiddleware
+
 
 port = int(os.getenv("PORT", "8000"))
 
@@ -38,6 +40,13 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 app.add_middleware(GZipMiddleware, minimum_size=500)
 app.include_router(controller.router)
 
