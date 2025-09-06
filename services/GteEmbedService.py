@@ -5,7 +5,6 @@ import torch
 from transformers import AutoModel, AutoTokenizer
 
 from implementations import GteEmbedServiceImpl
-import time
 
 modelName: str = "thenlper/gte-large"
 maxLength: int = 5000
@@ -95,17 +94,19 @@ class GteEmbedService(GteEmbedServiceImpl):
         return result
 
 
+
     async def GpuKeepAlive(self) -> None:
         while True:
             try:
-                ts = time.time()
                 a = torch.randn((1024, 512), device="cuda")
                 b = torch.randn((512, 1024), device="cuda")
-                c = torch.matmul(a, b)
-                d = torch.matmul(c, a.t())
-                s = d.sum().item()   # forces use of results
+                c = torch.matmul(a, b)       # c is 1024 x 1024
+                d = torch.matmul(c, c)       # valid: 1024 x 1024 @ 1024 x 1024
+                _ = d.sum().item()
                 torch.cuda.synchronize()
-                print(f"[GPU keepalive] tick {time.strftime('%X')} took {time.time() - ts:.3f}s sum={s:.3f}")
             except Exception as e:
                 print("[GPU keepalive] error:", e)
+
+                # keep it silent; remove print spam in production
+                pass
             await asyncio.sleep(keepaliveInterval)
