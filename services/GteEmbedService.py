@@ -5,12 +5,13 @@ import torch
 from transformers import AutoModel, AutoTokenizer
 
 from implementations import GteEmbedServiceImpl
+import time
 
 modelName: str = "thenlper/gte-large"
 maxLength: int = 5000
 maxTexts: int = 30
 device: torch.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-keepaliveInterval: float = 0.5
+keepaliveInterval: float = 0.2
 
 tokenizer: Any = None
 model: Any = None
@@ -79,9 +80,15 @@ class GteEmbedService(GteEmbedServiceImpl):
     async def GpuKeepAlive(self) -> None:
         while True:
             try:
-                a = torch.empty((1024, 1024), device="cuda")
-                a = torch.matmul(a, a)
+                ts = time.time()
+                # mix of smaller matmuls to exercise SMs more frequently but not OOM
+                a = torch.randn((512, 512), device="cuda")
+                b = torch.randn((512, 512), device="cuda")
+                c = torch.matmul(a, b)   # warm ALUs + memory
+                # do a simple elementwise op too (touch memory differently)
+                c.add_(1.0)
                 torch.cuda.synchronize()
-            except Exception:
-                pass
+                print(f"[GPU keepalive] tick {time.strftime('%X')} took {time.time() - ts:.3f}s")
+            except Exception as e:
+                print("[GPU keepalive] error:", e)
             await asyncio.sleep(keepaliveInterval)
