@@ -50,11 +50,15 @@ class GteEmbedService(GteEmbedServiceImpl):
         return (lastHidden * m).sum(1) / m.sum(1).clamp(min=1e-9)
 
     def Embed(self, texts: List[str]) -> List[List[float]]:
+        import time
+        t0 = time.time()
+
         if not texts:
             raise ValueError("texts empty")
         if len(texts) > maxTexts:
             raise ValueError(f"texts length exceeds {maxTexts}")
 
+        t_tok0 = time.time()
         tok: Dict[str, torch.Tensor] = tokenizer(
             texts,
             return_tensors="pt",
@@ -62,10 +66,15 @@ class GteEmbedService(GteEmbedServiceImpl):
             max_length=maxLength,
             padding=True,
         )
+        t_tok = time.time() - t_tok0
+
+        t_move0 = time.time()
         inputs: Dict[str, torch.Tensor] = {
             k: v.to(device, non_blocking=True) for k, v in tok.items()
         }
+        t_move = time.time() - t_move0
 
+        t_model0 = time.time()
         with torch.inference_mode():
             out = model(**inputs)
             emb: Any = self.MeanPool(
@@ -73,22 +82,30 @@ class GteEmbedService(GteEmbedServiceImpl):
             ).cpu()
         if torch.cuda.is_available():
             torch.cuda.synchronize()
+        t_model = time.time() - t_model0
 
         result: List[List[float]] = [emb[i].tolist() for i in range(emb.size(0))]
+
+        total = time.time() - t0
+        print(
+            f"[embed timings] total={total:.3f}s tok={t_tok:.3f}s "
+            f"move={t_move:.3f}s model={t_model:.3f}s"
+        )
+
         return result
+
 
     async def GpuKeepAlive(self) -> None:
         while True:
             try:
                 ts = time.time()
-                # mix of smaller matmuls to exercise SMs more frequently but not OOM
-                a = torch.randn((512, 512), device="cuda")
-                b = torch.randn((512, 512), device="cuda")
-                c = torch.matmul(a, b)   # warm ALUs + memory
-                # do a simple elementwise op too (touch memory differently)
-                c.add_(1.0)
+                a = torch.randn((1024, 512), device="cuda")
+                b = torch.randn((512, 1024), device="cuda")
+                c = torch.matmul(a, b)
+                d = torch.matmul(c, a.t())
+                s = d.sum().item()   # forces use of results
                 torch.cuda.synchronize()
-                print(f"[GPU keepalive] tick {time.strftime('%X')} took {time.time() - ts:.3f}s")
+                print(f"[GPU keepalive] tick {time.strftime('%X')} took {time.time() - ts:.3f}s sum={s:.3f}")
             except Exception as e:
                 print("[GPU keepalive] error:", e)
             await asyncio.sleep(keepaliveInterval)
