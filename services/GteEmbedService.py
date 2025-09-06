@@ -10,7 +10,7 @@ modelName: str = "thenlper/gte-large"
 maxLength: int = 5000
 maxTexts: int = 30
 device: torch.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-keepaliveInterval: float = 0.2
+keepaliveInterval: float = 30
 
 tokenizer: Any = None
 model: Any = None
@@ -98,15 +98,11 @@ class GteEmbedService(GteEmbedServiceImpl):
     async def GpuKeepAlive(self) -> None:
         while True:
             try:
-                a = torch.randn((1024, 512), device="cuda")
-                b = torch.randn((512, 1024), device="cuda")
-                c = torch.matmul(a, b)       # c is 1024 x 1024
-                d = torch.matmul(c, c)       # valid: 1024 x 1024 @ 1024 x 1024
-                _ = d.sum().item()
+                # tiny operation that touches the device without heavy compute
+                a = torch.empty((64, 64), device="cuda")
+                a.add_(1.0)
+                # ensure kernels finished
                 torch.cuda.synchronize()
-            except Exception as e:
-                print("[GPU keepalive] error:", e)
-
-                # keep it silent; remove print spam in production
+            except Exception:
                 pass
             await asyncio.sleep(keepaliveInterval)
