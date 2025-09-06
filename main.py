@@ -29,5 +29,5 @@ app.include_router(controller.router)
 
 if __name__ == "__main__":
     uvicorn.run(
-        "app:app", host="0.0.0.0", port=port, workers=1, loop="uvloop", http="httptools"
+        "main:app", host="0.0.0.0", port=port, workers=1, loop="uvloop", http="httptools"
     )
