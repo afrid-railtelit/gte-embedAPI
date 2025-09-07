@@ -3,12 +3,12 @@ from typing import Any, Dict, List, cast
 
 import torch
 from transformers import AutoModel, AutoTokenizer
-
 from implementations import GteEmbedServiceImpl
+from services.GteEmbedBatcherService import GteEmbedBatcherService
 
 modelName: str = "thenlper/gte-large"
-maxLength: int = 5000
-maxTexts: int = 30
+maxLength: int = 400
+maxTexts: int = 60
 device: torch.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 keepaliveInterval: float = 30
 
@@ -23,9 +23,7 @@ class GteEmbedService(GteEmbedServiceImpl):
         if tokenizer is not None and model is not None:
             return
 
-        tokenizer = cast(Any, AutoTokenizer).from_pretrained(
-            modelName, use_fast=True
-        )
+        tokenizer = cast(Any, AutoTokenizer).from_pretrained(modelName, use_fast=True)
         dtype = torch.float16 if torch.cuda.is_available() else torch.float32
         model = cast(Any, AutoModel).from_pretrained(modelName, dtype=dtype)
         model.to(device)
@@ -44,12 +42,18 @@ class GteEmbedService(GteEmbedServiceImpl):
             if torch.cuda.is_available():
                 torch.cuda.synchronize()
 
+        self.batcher = GteEmbedBatcherService(self.Embed, maxBatchSize=64, maxDelayMs=8)
+
     def MeanPool(self, lastHidden: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
         m = mask.unsqueeze(-1).expand(lastHidden.size()).float()
         return (lastHidden * m).sum(1) / m.sum(1).clamp(min=1e-9)
 
+    async def EmbedBatched(self, texts: List[str]) -> List[List[float]]:
+        return await self.batcher.submit(texts)
+
     def Embed(self, texts: List[str]) -> List[List[float]]:
         import time
+
         t0 = time.time()
 
         if not texts:
@@ -92,8 +96,6 @@ class GteEmbedService(GteEmbedServiceImpl):
         )
 
         return result
-
-
 
     async def GpuKeepAlive(self) -> None:
         while True:

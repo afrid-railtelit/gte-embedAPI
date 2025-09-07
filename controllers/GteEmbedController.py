@@ -31,7 +31,7 @@ class EmbedController(GteEmbedControllerImpl):
 
         texts: List[str] = req.texts
         try:
-            embeddings = self.service.Embed(texts)
+            embeddings = await self.service.EmbedBatched(texts)
             items: List[Any] = []
             for i, emb in enumerate(embeddings):
                 items.append(EmbeddingItemModel(index=i, embedding=emb).model_dump())

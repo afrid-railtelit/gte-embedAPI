@@ -15,6 +15,11 @@ class GteEmbedServiceImpl(ABC):
     @abstractmethod
     def Embed(self, texts: List[str]) -> List[List[float]]:
         pass
+    
+    @abstractmethod
+    async def EmbedBatched(self, texts: List[str]) -> List[List[float]]:
+        pass
+
 
     @abstractmethod
     async def GpuKeepAlive(self) -> None:
