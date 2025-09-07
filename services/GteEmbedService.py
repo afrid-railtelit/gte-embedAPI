@@ -7,7 +7,7 @@ from implementations import GteEmbedServiceImpl
 from services.GteEmbedBatcherService import GteEmbedBatcherService
 
 modelName: str = "thenlper/gte-base"
-maxLength: int = 300
+maxLength: int = 500
 maxTexts: int = 60
 device: torch.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 keepaliveInterval: float = 10
