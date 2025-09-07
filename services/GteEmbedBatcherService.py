@@ -1,7 +1,6 @@
 import asyncio
 from typing import List, Any, Callable
 
-
 class GteEmbedBatcherService:
     def __init__(
         self,
@@ -13,8 +12,12 @@ class GteEmbedBatcherService:
         self.maxBatchSize = maxBatchSize
         self.maxDelay = maxDelayMs / 1000.0
         self.queue: Any = asyncio.Queue()
-        self.task = asyncio.get_event_loop_policy().get_event_loop().create_task(self._runLoop())
+        self.task = None  # Initialize task as None
 
+    async def start(self):
+        """Start the batcher loop task in an async context."""
+        if self.task is None:
+            self.task = asyncio.create_task(self._runLoop())
 
     async def submit(self, texts: List[str]) -> List[Any]:
         loop = asyncio.get_running_loop()

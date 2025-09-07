@@ -16,7 +16,6 @@ tokenizer: Any = None
 model: Any = None
 keepaliveTask: Any = None
 
-
 class GteEmbedService(GteEmbedServiceImpl):
     def LoadModel(self) -> None:
         global tokenizer, model, keepaliveTask
@@ -100,10 +99,8 @@ class GteEmbedService(GteEmbedServiceImpl):
     async def GpuKeepAlive(self) -> None:
         while True:
             try:
-                # tiny operation that touches the device without heavy compute
                 a = torch.empty((64, 64), device="cuda")
                 a.add_(1.0)
-                # ensure kernels finished
                 torch.cuda.synchronize()
             except Exception:
                 pass

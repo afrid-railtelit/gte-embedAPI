@@ -9,16 +9,17 @@ from services import GteEmbedService
 from controllers import EmbedController
 from fastapi.middleware.cors import CORSMiddleware
 
-
 port = int(os.getenv("PORT", "8000"))
 
 service = GteEmbedService()
 controller = EmbedController(service)
 
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    # Run LoadModel in a thread
     await asyncio.to_thread(service.LoadModel)
+    # Start the batcher task in the main event loop
+    await service.batcher.start()
 
     try:
         if (
@@ -36,8 +37,9 @@ async def lifespan(app: FastAPI):
     try:
         yield
     finally:
-        pass
-
+        # Optionally clean up the batcher task
+        if service.batcher.task is not None:
+            service.batcher.task.cancel()
 
 app = FastAPI(lifespan=lifespan)
 app.add_middleware(
