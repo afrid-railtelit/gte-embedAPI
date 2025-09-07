@@ -7,7 +7,7 @@ from implementations import GteEmbedServiceImpl
 from services.GteEmbedBatcherService import GteEmbedBatcherService
 
 modelName: str = "thenlper/gte-base"
-maxLength: int = 100
+maxLength: int = 500
 maxTexts: int = 60
 device: torch.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 keepaliveInterval: float = 10
@@ -42,7 +42,7 @@ class GteEmbedService(GteEmbedServiceImpl):
             if torch.cuda.is_available():
                 torch.cuda.synchronize()
 
-        self.batcher = GteEmbedBatcherService(self.Embed, maxBatchSize=32, maxDelayMs=5)
+        self.batcher = GteEmbedBatcherService(self.Embed, maxBatchSize=60, maxDelayMs=5)
 
     def MeanPool(self, lastHidden: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
         m = mask.unsqueeze(-1).expand(lastHidden.size()).float()
