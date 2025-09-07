@@ -3,10 +3,11 @@ from typing import Any, Dict, List, cast
 import torch
 from transformers import AutoModel, AutoTokenizer
 from implementations import GteEmbedServiceImpl
+from services.GteEmbedBatcherService import GteEmbedBatcherService
 import numpy as np
 
 modelName: str = "abhinand/MedEmbed-large-v0.1"
-maxLength: int = 512  # Reduced to standard length
+maxLength: int = 500
 maxTexts: int = 100
 device: torch.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 keepaliveInterval: float = 10
@@ -41,6 +42,8 @@ class GteEmbedService(GteEmbedServiceImpl):
                 torch.cuda.synchronize()
                 print("Model warmed up successfully")
 
+        self.batcher = GteEmbedBatcherService(self.Embed, maxBatchSize=50, maxDelayMs=5)
+
     def MeanPool(self, lastHidden: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
         mask = mask.unsqueeze(-1).to(lastHidden.dtype)
         summed = (lastHidden * mask).sum(dim=1)
@@ -50,7 +53,8 @@ class GteEmbedService(GteEmbedServiceImpl):
         return emb
 
     async def EmbedBatched(self, texts: List[str]) -> List[List[float]]:
-        return self.Embed(texts)  # No batching
+        result = await self.batcher.submit(texts)
+        return result
 
     def Embed(self, texts: List[str]) -> List[List[float]]:
         if not texts:
