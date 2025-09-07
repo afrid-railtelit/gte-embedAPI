@@ -14,11 +14,10 @@ port = int(os.getenv("PORT", "8000"))
 service = GteEmbedService()
 controller = EmbedController(service)
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Run LoadModel in a thread
     await asyncio.to_thread(service.LoadModel)
-    # Start the batcher task in the main event loop
     await service.batcher.start()
 
     try:
@@ -37,9 +36,9 @@ async def lifespan(app: FastAPI):
     try:
         yield
     finally:
-        # Optionally clean up the batcher task
         if service.batcher.task is not None:
             service.batcher.task.cancel()
+
 
 app = FastAPI(lifespan=lifespan)
 app.add_middleware(
@@ -60,5 +59,5 @@ if __name__ == "__main__":
         workers=1,
         loop="uvloop",
         http="httptools",
-        timeout_keep_alive=300
+        timeout_keep_alive=300,
     )

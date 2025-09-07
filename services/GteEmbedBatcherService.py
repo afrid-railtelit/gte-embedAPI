@@ -12,10 +12,9 @@ class GteEmbedBatcherService:
         self.maxBatchSize = maxBatchSize
         self.maxDelay = maxDelayMs / 1000.0
         self.queue: Any = asyncio.Queue()
-        self.task = None  # Initialize task as None
+        self.task = None 
 
     async def start(self):
-        """Start the batcher loop task in an async context."""
         if self.task is None:
             self.task = asyncio.create_task(self._runLoop())
 
