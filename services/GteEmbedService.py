@@ -1,104 +1,194 @@
-import torch
+# services/GteEmbedService.py
+import asyncio
+from typing import Any, Dict, List, cast
+
+import torch  # kept for GPU keepalive and original constants
 from transformers import AutoTokenizer
-from transformers.models.bert.modeling_bert import BertModel
-from transformers.models.bert.tokenization_bert_fast import BertTokenizerFast
-from torch import Tensor
-import onnx
-import onnx.checker
-from typing import Dict, List
+from implementations import GteEmbedServiceImpl
+from services.GteEmbedBatcherService import GteEmbedBatcherService
 
-class GteEmbedService:
-    def __init__(self):
-        self.model_name: str = "thenlper/gte-base"
-        self.max_length: int = 300
-        self.device: torch.device = torch.device("cpu")  # Use CPU for export to match trace
-        self.tokenizer: BertTokenizerFast = AutoTokenizer.from_pretrained(self.model_name, use_fast=True)
-        self.model: BertModel = AutoModel.from_pretrained(self.model_name)
-        self.model.eval()
+import onnxruntime as ort
+import numpy as np
 
-    def MeanPool(self, last_hidden: Tensor, mask: Tensor) -> Tensor:
-        m = mask.unsqueeze(-1).expand(last_hidden.size()).float()
-        return (last_hidden * m).sum(1) / m.sum(1).clamp(min=1e-9)
+# ----------------------
+# Config
+# ----------------------
+modelName: str = "thenlper/gte-base"
+ONNX_MODEL_PATH: str = "gte.onnx"  # path to existing ONNX file
+maxLength: int = 300
+maxTexts: int = 100
+device: torch.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+keepaliveInterval: float = 10.0
+
+# Globals (singletons)
+tokenizer: Any = None
+ort_session: Any = None
+_input_names: Any = None
+_output_name: Any = None
+keepaliveTask: Any = None
+
+
+class GteEmbedService(GteEmbedServiceImpl):
+    def LoadModel(self) -> None:
+        """
+        Initialize tokenizer and ONNX Runtime session. Warm up once.
+        """
+        global tokenizer, ort_session, _input_names, _output_name, keepaliveTask
+        if tokenizer is not None and ort_session is not None:
+            return
+
+        # tokenizer (cast to Any to silence strict type-checkers)
+        tokenizer = cast(Any, AutoTokenizer.from_pretrained(modelName, use_fast=True))
+
+        # create ORT session with CUDAExecutionProvider if available
+        providers = ["CUDAExecutionProvider", "CPUExecutionProvider"] if torch.cuda.is_available() else ["CPUExecutionProvider"]
+        sess_opts = ort.SessionOptions()
+        sess_opts.graph_optimization_level = ort.GraphOptimizationLevel.ORT_ENABLE_EXTENDED
+        # single-threaded per session to reduce context switching overhead; adjust if needed
+        sess_opts.intra_op_num_threads = 1
+
+        try:
+            ort_session = ort.InferenceSession(ONNX_MODEL_PATH, sess_opts, providers=providers)
+        except Exception as e:
+            raise RuntimeError(f"Failed to create ONNX Runtime session for {ONNX_MODEL_PATH}: {e}")
+
+        # capture input/output names to map tokenizer outputs to ONNX inputs
+        _input_names = [inp.name for inp in ort_session.get_inputs()]
+        outputs = ort_session.get_outputs()
+        if not outputs:
+            raise RuntimeError("ONNX model has no outputs.")
+        _output_name = outputs[0].name
+
+        # Warmup (run one short forward to JIT kernels / allocate mem)
+        try:
+            warmText: str = "hello " * 16
+            tokWarm: Dict[str, Any] = tokenizer(
+                [warmText],
+                return_tensors="np",
+                truncation=True,
+                max_length=maxLength,
+                padding=True,
+            )
+
+            onnx_inputs = {}
+            # map ort input names to tokenizer outputs (case-insensitive)
+            tok_keys_lc = {k.lower(): k for k in tokWarm.keys()}
+            for name in _input_names:
+                lname = name.lower()
+                if lname in tok_keys_lc:
+                    arr = tokWarm[tok_keys_lc[lname]]
+                    # ensure int64 for ids/masks as ONNX expects
+                    if arr.dtype != np.int64:
+                        arr = arr.astype(np.int64)
+                    onnx_inputs[name] = arr
+                else:
+                    # if model expects token_type_ids etc. provide zeros
+                    if "token_type" in lname or "segment" in lname:
+                        sample = next(iter(tokWarm.values()))
+                        onnx_inputs[name] = np.zeros(sample.shape, dtype=np.int64)
+                    else:
+                        # best-effort: attempt to skip unknown optional inputs
+                        raise RuntimeError(f"ONNX model expects input '{name}' but tokenizer didn't produce it. Tokenizer keys: {list(tokWarm.keys())}")
+
+            # run warmup
+            ort_session.run([_output_name], onnx_inputs)
+        except Exception:
+            # non-fatal warmup errors shouldn't stop service init
+            pass
+
+        # instantiate batcher (maxBatchSize=0 -> immediate dispatch; keep maxDelayMs small)
+        self.batcher = GteEmbedBatcherService(self.Embed, maxBatchSize=0, maxDelayMs=5)
+
+    def MeanPool(self, lastHidden: np.ndarray, mask: np.ndarray) -> np.ndarray:
+        """
+        Mean pooling for NumPy arrays.
+        lastHidden: (batch, seq_len, hidden)
+        mask: (batch, seq_len) with 1 for tokens to include, 0 otherwise
+        """
+        # ensure float type matches lastHidden dtype
+        m = np.expand_dims(mask.astype(lastHidden.dtype), axis=-1)  # (batch, seq_len, 1)
+        summed = (lastHidden * m).sum(axis=1)  # (batch, hidden)
+        denom = m.sum(axis=1).clip(min=1e-9)  # (batch, 1)
+        return summed / denom
+
+    async def EmbedBatched(self, texts: List[str]) -> List[List[float]]:
+        return await self.batcher.submit(texts)
 
     def Embed(self, texts: List[str]) -> List[List[float]]:
+        """
+        Tokenize -> run ONNX -> mean-pool -> return python list embeddings.
+        """
+        global tokenizer, ort_session, _input_names, _output_name
+
         if not texts:
             raise ValueError("texts empty")
-        if len(texts) > 100:
-            raise ValueError("texts length exceeds 100")
+        if len(texts) > maxTexts:
+            raise ValueError(f"texts length exceeds {maxTexts}")
 
-        tok: Dict[str, Tensor] = self.tokenizer(
+        if tokenizer is None or ort_session is None:
+            raise RuntimeError("Model not loaded. Call LoadModel first.")
+
+        # Tokenize to numpy to avoid torch copies; use padding/truncation
+        tok: Dict[str, Any] = tokenizer(
             texts,
-            return_tensors="pt",
+            return_tensors="np",
             truncation=True,
-            max_length=self.max_length,
+            max_length=maxLength,
             padding=True,
         )
 
-        inputs: Dict[str, Tensor] = {
-            k: v.to(self.device, non_blocking=True) for k, v in tok.items()
-        }
+        # Build ONNX Runtime input dict mapping names expected by the model
+        onnx_inputs: Dict[str, np.ndarray] = {}
+        tok_keys_lc = {k.lower(): k for k in tok.keys()}
 
-        with torch.inference_mode():
-            out = self.model(**inputs)
-            emb: Tensor = self.MeanPool(out.last_hidden_state, inputs["attention_mask"]).cpu()
-        
-        result: List[List[float]] = [emb[i].tolist() for i in range(emb.size(0))]
+        for name in _input_names:
+            lname = name.lower()
+            if lname in tok_keys_lc:
+                arr = tok[tok_keys_lc[lname]]
+                if arr.dtype != np.int64:
+                    arr = arr.astype(np.int64)
+                onnx_inputs[name] = arr
+            else:
+                # if input expected is token_type_ids or similar, supply zeros
+                if "token_type" in lname or "segment" in lname:
+                    sample = next(iter(tok.values()))
+                    onnx_inputs[name] = np.zeros(sample.shape, dtype=np.int64)
+                else:
+                    raise RuntimeError(f"ONNX model expects input '{name}' but tokenizer didn't produce it. Tokenizer keys: {list(tok.keys())}")
+
+        # Run inference (blocking). CUDAExecutionProvider will run on GPU if available.
+        ort_outs = ort_session.run([_output_name], onnx_inputs)
+        last_hidden = ort_outs[0]  # expected shape: (batch, seq_len, hidden), numpy ndarray
+
+        # get attention_mask (if available) else assume all ones
+        attn_key = None
+        for k in tok.keys():
+            if k.lower() == "attention_mask":
+                attn_key = k
+                break
+        if attn_key is None:
+            attention_mask = np.ones(last_hidden.shape[:2], dtype=np.int64)
+        else:
+            attention_mask = tok[attn_key].astype(np.int64)
+
+        # Mean pool (numpy)
+        pooled = self.MeanPool(last_hidden, attention_mask)  # (batch, hidden)
+
+        # Convert to Python list (float) for JSON/transport
+        result: List[List[float]] = [pooled[i].astype(float).tolist() for i in range(pooled.shape[0])]
         return result
 
-class GteModelWithPooling(torch.nn.Module):
-    def __init__(self, service: GteEmbedService):
-        super().__init__()
-        self.model: BertModel = service.model
-        self.mean_pool = service.MeanPool
-
-    def forward(self, input_ids: Tensor, attention_mask: Tensor) -> Tensor:
-        outputs = self.model(input_ids, attention_mask)
-        embeddings = self.mean_pool(outputs.last_hidden_state, attention_mask)
-        return embeddings
-
-def export_to_onnx() -> None:
-    service = GteEmbedService()
-
-    input_texts = ["This is a sample input for testing the gte-base model."]
-    batch_dict = service.tokenizer(
-        input_texts,
-        max_length=service.max_length,
-        padding=True,
-        truncation=True,
-        return_tensors="pt"
-    )
-    input_ids = batch_dict["input_ids"].to(service.device)
-    attention_mask = batch_dict["attention_mask"].to(service.device)
-
-    model_with_pooling = GteModelWithPooling(service).to(service.device)
-
-    output_path = "gte-base.onnx"
-    try:
-        torch.onnx.export(
-            model_with_pooling,
-            (input_ids, attention_mask),
-            output_path,
-            opset_version=14,  # Use opset 14 to support scaled_dot_product_attention
-            input_names=["input_ids", "attention_mask"],
-            output_names=["embeddings"],
-            dynamic_axes={
-                "input_ids": {0: "batch_size", 1: "sequence_length"},
-                "attention_mask": {0: "batch_size", 1: "sequence_length"},
-                "embeddings": {0: "batch_size"},
-            },
-        )
-        print(f"Model successfully exported to {output_path}")
-    except Exception as e:
-        print(f"Error during ONNX export: {e}")
-        raise
-
-    try:
-        onnx_model = onnx.load(output_path)
-        onnx.checker.check_model(onnx_model)
-        print("ONNX model is valid!")
-    except Exception as e:
-        print(f"Error validating ONNX model: {e}")
-        raise
-
-if __name__ == "__main__":
-    export_to_onnx()
+    async def GpuKeepAlive(self) -> None:
+        """
+        Periodic GPU keepalive to prevent GPU/driver timeout. Kept simple (uses torch).
+        If you don't want torch dependency at all, remove this method or replace with an ORT-based keepalive.
+        """
+        while True:
+            try:
+                if torch.cuda.is_available():
+                    a = torch.empty((64, 64), device="cuda")
+                    a.add_(1.0)
+                    # avoid global synchronize here to reduce latency spikes
+            except Exception:
+                pass
+            await asyncio.sleep(keepaliveInterval)
