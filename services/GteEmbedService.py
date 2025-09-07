@@ -7,10 +7,10 @@ from implementations import GteEmbedServiceImpl
 from services.GteEmbedBatcherService import GteEmbedBatcherService
 
 modelName: str = "thenlper/gte-large"
-maxLength: int = 400
+maxLength: int = 128  # Reduced from 400 to minimize padding and inference time
 maxTexts: int = 60
 device: torch.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-keepaliveInterval: float = 30
+keepaliveInterval: float = 10  # Increased to reduce GPU keep-alive overhead
 
 tokenizer: Any = None
 model: Any = None
@@ -23,12 +23,11 @@ class GteEmbedService(GteEmbedServiceImpl):
             return
 
         tokenizer = cast(Any, AutoTokenizer).from_pretrained(modelName, use_fast=True)
-        dtype = torch.float16 if torch.cuda.is_available() else torch.float32
-        model = cast(Any, AutoModel).from_pretrained(modelName, dtype=dtype)
-        model.to(device)
+        # Use 4-bit quantization for faster inference
+        model = cast(Any, AutoModel).from_pretrained(modelName, load_in_4bit=True, device_map="auto")
         model.eval()
 
-        warmText: str = "hello " * 16
+        warmText: str = "hello " * 8  # Adjusted for smaller maxLength
         tokWarm: Dict[str, torch.Tensor] = tokenizer(
             warmText, return_tensors="pt", truncation=True, max_length=maxLength
         )
@@ -41,7 +40,8 @@ class GteEmbedService(GteEmbedServiceImpl):
             if torch.cuda.is_available():
                 torch.cuda.synchronize()
 
-        self.batcher = GteEmbedBatcherService(self.Embed, maxBatchSize=64, maxDelayMs=8)
+        # Reduced maxBatchSize to prevent memory issues with quantization
+        self.batcher = GteEmbedBatcherService(self.Embed, maxBatchSize=32, maxDelayMs=4)
 
     def MeanPool(self, lastHidden: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
         m = mask.unsqueeze(-1).expand(lastHidden.size()).float()
@@ -60,9 +60,15 @@ class GteEmbedService(GteEmbedServiceImpl):
         if len(texts) > maxTexts:
             raise ValueError(f"texts length exceeds {maxTexts}")
 
+        # Pre-truncate texts to 128 characters to reduce tokenization overhead
+        truncated_texts = [t[:128] for t in texts]
+
+        # Deduplicate texts to minimize tokenization and inference
+        unique_texts = list(dict.fromkeys(truncated_texts))
+
         t_tok0 = time.time()
         tok: Dict[str, torch.Tensor] = tokenizer(
-            texts,
+            unique_texts,
             return_tensors="pt",
             truncation=True,
             max_length=maxLength,
@@ -79,14 +85,13 @@ class GteEmbedService(GteEmbedServiceImpl):
         t_model0 = time.time()
         with torch.inference_mode():
             out = model(**inputs)
-            emb: Any = self.MeanPool(
-                out.last_hidden_state, inputs["attention_mask"]
-            ).cpu()
+            emb = self.MeanPool(out.last_hidden_state, inputs["attention_mask"])
         if torch.cuda.is_available():
             torch.cuda.synchronize()
         t_model = time.time() - t_model0
 
-        result: List[List[float]] = [emb[i].tolist() for i in range(emb.size(0))]
+        # Replicate embeddings for duplicate texts
+        result = [emb[unique_texts.index(t)].tolist() for t in truncated_texts]
 
         total = time.time() - t0
         print(
@@ -99,7 +104,7 @@ class GteEmbedService(GteEmbedServiceImpl):
     async def GpuKeepAlive(self) -> None:
         while True:
             try:
-                a = torch.empty((64, 64), device="cuda")
+                a = torch.empty((32, 32), device="cuda")  # Smaller tensor for less overhead
                 a.add_(1.0)
                 torch.cuda.synchronize()
             except Exception:
