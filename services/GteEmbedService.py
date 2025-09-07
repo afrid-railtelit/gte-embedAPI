@@ -2,7 +2,7 @@
 import asyncio
 from typing import Any, Dict, List, cast
 
-import torch  # kept for GPU keepalive and original constants
+import torch  # kept for GPU keepalive and device detection
 from transformers import AutoTokenizer
 from implementations import GteEmbedServiceImpl
 from services.GteEmbedBatcherService import GteEmbedBatcherService
@@ -14,6 +14,7 @@ import numpy as np
 # Config
 # ----------------------
 modelName: str = "thenlper/gte-base"
+# Set this to where your ONNX file actually is (absolute path is safest)
 ONNX_MODEL_PATH: str = "/home/alien/gte-embedAPI/services/gte-base.onnx"
 maxLength: int = 300
 maxTexts: int = 100
@@ -59,7 +60,7 @@ class GteEmbedService(GteEmbedServiceImpl):
             raise RuntimeError("ONNX model has no outputs.")
         _output_name = outputs[0].name
 
-        # Warmup (run one short forward to JIT kernels / allocate mem)
+        # Warmup (run one short forward to compile kernels / allocate mem)
         try:
             warmText: str = "hello " * 16
             tokWarm: Dict[str, Any] = tokenizer(
@@ -88,7 +89,10 @@ class GteEmbedService(GteEmbedServiceImpl):
                         onnx_inputs[name] = np.zeros(sample.shape, dtype=np.int64)
                     else:
                         # best-effort: attempt to skip unknown optional inputs
-                        raise RuntimeError(f"ONNX model expects input '{name}' but tokenizer didn't produce it. Tokenizer keys: {list(tokWarm.keys())}")
+                        raise RuntimeError(
+                            f"ONNX model expects input '{name}' but tokenizer didn't produce it. "
+                            f"Tokenizer keys: {list(tokWarm.keys())}"
+                        )
 
             # run warmup
             ort_session.run([_output_name], onnx_inputs)
@@ -101,15 +105,53 @@ class GteEmbedService(GteEmbedServiceImpl):
 
     def MeanPool(self, lastHidden: np.ndarray, mask: np.ndarray) -> np.ndarray:
         """
-        Mean pooling for NumPy arrays.
-        lastHidden: (batch, seq_len, hidden)
-        mask: (batch, seq_len) with 1 for tokens to include, 0 otherwise
+        Robust mean pooling that handles:
+          - lastHidden already pooled (shape (B, H))
+          - lastHidden token-level (B, S, H)
+          - mask/lastHidden seq_len mismatches by truncating or padding mask
+
+        lastHidden: np.ndarray, either (B, H) or (B, S, H)
+        mask: np.ndarray with shape (B, S_mask) (dtype 0/1)
+        returns: np.ndarray (B, H) dtype float32
         """
-        # ensure float type matches lastHidden dtype
-        m = np.expand_dims(mask.astype(lastHidden.dtype), axis=-1)  # (batch, seq_len, 1)
-        summed = (lastHidden * m).sum(axis=1)  # (batch, hidden)
-        denom = m.sum(axis=1).clip(min=1e-9)  # (batch, 1)
-        return summed / denom
+        # If model already returned pooled embeddings (B, H) -> return directly
+        if lastHidden.ndim == 2:
+            return lastHidden.astype(np.float32)
+
+        # Expect lastHidden.ndim == 3: (B, seq_len, hidden)
+        if lastHidden.ndim != 3:
+            raise ValueError(f"Unexpected lastHidden ndim: {lastHidden.ndim}, expected 2 or 3.")
+
+        batch, seq_len, hidden = lastHidden.shape
+
+        # Normalize mask dims
+        if mask.ndim != 2:
+            # try to squeeze if someone passed (B, S, 1)
+            if mask.ndim == 3 and mask.shape[2] == 1:
+                mask = mask.squeeze(2)
+            else:
+                raise ValueError(f"Unexpected attention mask shape: {mask.shape}")
+
+        mask_batch, mask_len = mask.shape
+        if mask_batch != batch:
+            raise ValueError(f"Batch size mismatch between lastHidden ({batch}) and mask ({mask_batch})")
+
+        # If mask length != seq_len, fix by truncating or padding (pad with ones)
+        if mask_len != seq_len:
+            if mask_len > seq_len:
+                # tokenizer produced longer mask than model output seq_len: truncate
+                mask = mask[:, :seq_len]
+            else:
+                # mask shorter than model seq_len: pad with ones (assume remaining tokens valid)
+                pad_len = seq_len - mask_len
+                pad = np.ones((batch, pad_len), dtype=mask.dtype)
+                mask = np.concatenate([mask, pad], axis=1)
+
+        # perform mean pooling safely
+        m = np.expand_dims(mask.astype(lastHidden.dtype), axis=-1)  # (B, S, 1)
+        summed = (lastHidden * m).sum(axis=1)  # (B, H)
+        denom = m.sum(axis=1).clip(min=1e-9)    # (B, 1)
+        return (summed / denom).astype(np.float32)
 
     async def EmbedBatched(self, texts: List[str]) -> List[List[float]]:
         return await self.batcher.submit(texts)
@@ -154,24 +196,32 @@ class GteEmbedService(GteEmbedServiceImpl):
                     sample = next(iter(tok.values()))
                     onnx_inputs[name] = np.zeros(sample.shape, dtype=np.int64)
                 else:
-                    raise RuntimeError(f"ONNX model expects input '{name}' but tokenizer didn't produce it. Tokenizer keys: {list(tok.keys())}")
+                    raise RuntimeError(
+                        f"ONNX model expects input '{name}' but tokenizer didn't produce it. Tokenizer keys: {list(tok.keys())}"
+                    )
 
         # Run inference (blocking). CUDAExecutionProvider will run on GPU if available.
         ort_outs = ort_session.run([_output_name], onnx_inputs)
-        last_hidden = ort_outs[0]  # expected shape: (batch, seq_len, hidden), numpy ndarray
+        last_hidden = ort_outs[0]  # expected shape: (batch, seq_len, hidden) or (batch, hidden)
 
-        # get attention_mask (if available) else assume all ones
+        # get attention_mask (if available) else assume all ones (matching seq dim if possible)
         attn_key = None
         for k in tok.keys():
             if k.lower() == "attention_mask":
                 attn_key = k
                 break
+
         if attn_key is None:
-            attention_mask = np.ones(last_hidden.shape[:2], dtype=np.int64)
+            # if model returned sequence dimension, create ones with that seq_len
+            if getattr(last_hidden, "ndim", None) == 3:
+                attention_mask = np.ones(last_hidden.shape[:2], dtype=np.int64)
+            else:
+                # last_hidden is (B, H) -> mask not needed, provide dummy
+                attention_mask = np.ones((len(texts), 1), dtype=np.int64)
         else:
             attention_mask = tok[attn_key].astype(np.int64)
 
-        # Mean pool (numpy)
+        # Mean pool (numpy) - MeanPool handles mismatch and already-pooled outputs
         pooled = self.MeanPool(last_hidden, attention_mask)  # (batch, hidden)
 
         # Convert to Python list (float) for JSON/transport
