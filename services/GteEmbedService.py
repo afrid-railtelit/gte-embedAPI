@@ -14,7 +14,7 @@ import numpy as np
 # Config
 # ----------------------
 modelName: str = "thenlper/gte-base"
-ONNX_MODEL_PATH: str = "gte.onnx"  # path to existing ONNX file
+ONNX_MODEL_PATH: str = "gte-base.onnx"  # path to existing ONNX file
 maxLength: int = 300
 maxTexts: int = 100
 device: torch.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
