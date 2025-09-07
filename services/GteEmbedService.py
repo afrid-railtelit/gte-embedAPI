@@ -6,7 +6,7 @@ from transformers import AutoModel, AutoTokenizer
 from implementations import GteEmbedServiceImpl
 from services.GteEmbedBatcherService import GteEmbedBatcherService
 
-modelName: str = "thenlper/gte-large"
+modelName: str = "thenlper/gte-base"
 maxLength: int = 100
 maxTexts: int = 60
 device: torch.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -15,6 +15,7 @@ keepaliveInterval: float = 10
 tokenizer: Any = None
 model: Any = None
 keepaliveTask: Any = None
+
 
 class GteEmbedService(GteEmbedServiceImpl):
     def LoadModel(self) -> None:
@@ -51,16 +52,12 @@ class GteEmbedService(GteEmbedServiceImpl):
         return await self.batcher.submit(texts)
 
     def Embed(self, texts: List[str]) -> List[List[float]]:
-        import time
-
-        t0 = time.time()
 
         if not texts:
             raise ValueError("texts empty")
         if len(texts) > maxTexts:
             raise ValueError(f"texts length exceeds {maxTexts}")
 
-        t_tok0 = time.time()
         tok: Dict[str, torch.Tensor] = tokenizer(
             texts,
             return_tensors="pt",
@@ -68,15 +65,11 @@ class GteEmbedService(GteEmbedServiceImpl):
             max_length=maxLength,
             padding=True,
         )
-        t_tok = time.time() - t_tok0
 
-        t_move0 = time.time()
         inputs: Dict[str, torch.Tensor] = {
             k: v.to(device, non_blocking=True) for k, v in tok.items()
         }
-        t_move = time.time() - t_move0
 
-        t_model0 = time.time()
         with torch.inference_mode():
             out = model(**inputs)
             emb: Any = self.MeanPool(
@@ -84,15 +77,8 @@ class GteEmbedService(GteEmbedServiceImpl):
             ).cpu()
         if torch.cuda.is_available():
             torch.cuda.synchronize()
-        t_model = time.time() - t_model0
 
         result: List[List[float]] = [emb[i].tolist() for i in range(emb.size(0))]
-
-        total = time.time() - t0
-        print(
-            f"[embed timings] total={total:.3f}s tok={t_tok:.3f}s "
-            f"move={t_move:.3f}s model={t_model:.3f}s"
-        )
 
         return result
 
