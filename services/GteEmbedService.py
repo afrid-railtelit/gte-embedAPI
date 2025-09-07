@@ -42,7 +42,7 @@ class GteEmbedService(GteEmbedServiceImpl):
             if torch.cuda.is_available():
                 torch.cuda.synchronize()
 
-        self.batcher = GteEmbedBatcherService(self.Embed, maxBatchSize=maxTexts, maxDelayMs=15)
+        self.batcher = GteEmbedBatcherService(self.Embed, maxBatchSize=40, maxDelayMs=15)
 
     def MeanPool(self, lastHidden: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
         m = mask.unsqueeze(-1).expand(lastHidden.size()).float()
