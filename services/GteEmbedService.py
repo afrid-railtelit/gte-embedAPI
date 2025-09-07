@@ -4,6 +4,7 @@ import torch
 from transformers import AutoModel, AutoTokenizer
 from implementations import GteEmbedServiceImpl
 from services.GteEmbedBatcherService import GteEmbedBatcherService
+import numpy as np
 
 modelName: str = "abhinand/MedEmbed-large-v0.1"
 maxLength: int = 512
@@ -41,7 +42,7 @@ class GteEmbedService(GteEmbedServiceImpl):
                 torch.cuda.synchronize()
                 print("Model warmed up successfully")
 
-        self.batcher = GteEmbedBatcherService(self.Embed, maxBatchSize=20, maxDelayMs=5)  # Reduced batch size
+        self.batcher = GteEmbedBatcherService(self.Embed, maxBatchSize=10, maxDelayMs=5)
 
     def MeanPool(self, lastHidden: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
         mask = mask.unsqueeze(-1).to(lastHidden.dtype)
