@@ -8,7 +8,7 @@ from services.GteEmbedBatcherService import GteEmbedBatcherService
 
 # modelName: str = "thenlper/gte-base"
 modelName: str = "abhinand/MedEmbed-large-v0.1"
-maxLength: int = 500
+maxLength: int = 1500
 maxTexts: int = 60
 device: torch.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 keepaliveInterval: float = 10
