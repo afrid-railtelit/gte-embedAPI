@@ -5,6 +5,7 @@ from .EmbeddingServiceBatcherServiceImpl import EmbeddingServiceBatcherServiceIm
 from .CrossEncoderRerankerBatcherServiceImpl import (
     CrossEncoderRerankerBatcherServiceImpl,
 )
+from .CrossEncoderRerankControllerImpl import CrossEncoderRerankControllerImpl
 
 __all__ = [
     "EmbeddingServiceImpl",
@@ -12,4 +13,5 @@ __all__ = [
     "CrossEncoderRerankerServiceImpl",
     "EmbeddingServiceBatcherServiceImpl",
     "CrossEncoderRerankerBatcherServiceImpl",
+    "CrossEncoderRerankControllerImpl"
 ]

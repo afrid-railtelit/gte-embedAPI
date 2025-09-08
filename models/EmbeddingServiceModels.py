@@ -2,7 +2,7 @@ from typing import List
 from pydantic import BaseModel
 
 
-class EmbedRequestModel(BaseModel):
+class EmbeddingControllerRequestModel(BaseModel):
     texts: List[str] = []
 
 
@@ -11,7 +11,7 @@ class EmbeddingItemModel(BaseModel):
     embedding: List[float]
 
 
-class EmbeddingResponseModel(BaseModel):
+class EmbeddingControllerResponseModel(BaseModel):
     results: List[EmbeddingItemModel]
     dim: int
 

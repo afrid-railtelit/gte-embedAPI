@@ -1,6 +1,7 @@
-from .EmbeddingController import EmbedController
-
+from .EmbeddingController import EmbeddingController
+from .CrossEncoderRerankController import CrossEncoderRerankController
 
 __all__ = [
-    "EmbedController"
+    "EmbeddingController",
+    "CrossEncoderRerankController"
 ]

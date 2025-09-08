@@ -6,21 +6,22 @@ from fastapi import FastAPI
 from fastapi.middleware.gzip import GZipMiddleware
 import torch
 from services import EmbeddingService, CrossEncoderRerankerService
-from controllers import EmbedController
+from controllers import EmbeddingController, CrossEncoderRerankController
 from fastapi.middleware.cors import CORSMiddleware
 
 port = int(os.getenv("PORT", "8000"))
 
-service = EmbeddingService()
+embeddingService = EmbeddingService()
 rerankerService = CrossEncoderRerankerService()
-controller = EmbedController(service)
+embeddingController = EmbeddingController(embeddingService)
+crossEncoderRerankerController = CrossEncoderRerankController(rerankerService)
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    await asyncio.to_thread(service.LoadModel)
+    await asyncio.to_thread(embeddingService.LoadModel)
     await asyncio.to_thread(rerankerService.LoadModel)
-    await service.batcher.start()
+    await embeddingService.batcher.start()
     await rerankerService.batcher.start()
 
     try:
@@ -31,7 +32,7 @@ async def lifespan(app: FastAPI):
         ):
             loop = asyncio.get_running_loop()
             __import__("services").EmbeddingService.keepaliveTask = loop.create_task(
-                service.GpuKeepAlive()
+                embeddingService.GpuKeepAlive()
             )
     except Exception:
         pass
@@ -39,8 +40,8 @@ async def lifespan(app: FastAPI):
     try:
         yield
     finally:
-        if service.batcher.task is not None:
-            service.batcher.task.cancel()
+        if embeddingService.batcher.task is not None:
+            embeddingService.batcher.task.cancel()
         if rerankerService.batcher.task is not None:
             rerankerService.batcher.task.cancel()
 
@@ -53,8 +54,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-app.add_middleware(GZipMiddleware, minimum_size=500)
-app.include_router(controller.router)
+app.add_middleware(GZipMiddleware, minimum_size=800)
+app.include_router(embeddingController.router, prefix="/api/v1")
+app.include_router(crossEncoderRerankerController.router, prefix="/api/v1")
 
 if __name__ == "__main__":
     uvicorn.run(

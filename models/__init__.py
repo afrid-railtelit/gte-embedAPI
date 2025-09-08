@@ -1,14 +1,22 @@
 from .EmbeddingServiceModels import (
     EmbeddingItemModel,
-    EmbedRequestModel,
-    EmbeddingResponseModel,
+    EmbeddingControllerRequestModel,
+    EmbeddingControllerResponseModel,
     ErrorResponseModel,
+)
+from .CrossEncoderRerankingModel import (
+    CrossEncoderRerankItemModel,
+    CrossEncoderRerankRequestModel,
+    CrossEncoderRerankResponseModel,
 )
 
 
 __all__ = [
     "EmbeddingItemModel",
-    "EmbedRequestModel",
-    "EmbeddingResponseModel",
+    "EmbeddingControllerRequestModel",
+    "EmbeddingControllerResponseModel",
     "ErrorResponseModel",
+    "CrossEncoderRerankItemModel",
+    "CrossEncoderRerankRequestModel",
+    "CrossEncoderRerankResponseModel",
 ]

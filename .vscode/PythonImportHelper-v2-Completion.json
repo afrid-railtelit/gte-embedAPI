@@ -32,6 +32,22 @@
         "documentation": {}
     },
     {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
         "label": "Tuple",
         "importPath": "typing",
         "description": "typing",
@@ -232,6 +248,30 @@
         "documentation": {}
     },
     {
+        "label": "APIRouter",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "Request",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "Request",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
         "label": "Request",
         "importPath": "fastapi",
         "description": "fastapi",
@@ -264,6 +304,22 @@
         "documentation": {}
     },
     {
+        "label": "JSONResponse",
+        "importPath": "fastapi.responses",
+        "description": "fastapi.responses",
+        "isExtraImport": true,
+        "detail": "fastapi.responses",
+        "documentation": {}
+    },
+    {
+        "label": "JSONResponse",
+        "importPath": "fastapi.responses",
+        "description": "fastapi.responses",
+        "isExtraImport": true,
+        "detail": "fastapi.responses",
+        "documentation": {}
+    },
+    {
         "label": "ResponseStatusEnum",
         "importPath": "enums",
         "description": "enums",
@@ -272,35 +328,19 @@
         "documentation": {}
     },
     {
-        "label": "EmbedRequestModel",
-        "importPath": "models",
-        "description": "models",
+        "label": "ResponseStatusEnum",
+        "importPath": "enums",
+        "description": "enums",
         "isExtraImport": true,
-        "detail": "models",
+        "detail": "enums",
         "documentation": {}
     },
     {
-        "label": "EmbeddingItemModel",
-        "importPath": "models",
-        "description": "models",
+        "label": "CrossEncoderRerankerService",
+        "importPath": "services",
+        "description": "services",
         "isExtraImport": true,
-        "detail": "models",
-        "documentation": {}
-    },
-    {
-        "label": "EmbeddingResponseModel",
-        "importPath": "models",
-        "description": "models",
-        "isExtraImport": true,
-        "detail": "models",
-        "documentation": {}
-    },
-    {
-        "label": "ErrorResponseModel",
-        "importPath": "models",
-        "description": "models",
-        "isExtraImport": true,
-        "detail": "models",
+        "detail": "services",
         "documentation": {}
     },
     {
@@ -325,6 +365,78 @@
         "description": "services",
         "isExtraImport": true,
         "detail": "services",
+        "documentation": {}
+    },
+    {
+        "label": "CrossEncoderRerankItemModel",
+        "importPath": "models",
+        "description": "models",
+        "isExtraImport": true,
+        "detail": "models",
+        "documentation": {}
+    },
+    {
+        "label": "CrossEncoderRerankRequestModel",
+        "importPath": "models",
+        "description": "models",
+        "isExtraImport": true,
+        "detail": "models",
+        "documentation": {}
+    },
+    {
+        "label": "CrossEncoderRerankResponseModel",
+        "importPath": "models",
+        "description": "models",
+        "isExtraImport": true,
+        "detail": "models",
+        "documentation": {}
+    },
+    {
+        "label": "ErrorResponseModel",
+        "importPath": "models",
+        "description": "models",
+        "isExtraImport": true,
+        "detail": "models",
+        "documentation": {}
+    },
+    {
+        "label": "EmbeddingControllerRequestModel",
+        "importPath": "models",
+        "description": "models",
+        "isExtraImport": true,
+        "detail": "models",
+        "documentation": {}
+    },
+    {
+        "label": "EmbeddingItemModel",
+        "importPath": "models",
+        "description": "models",
+        "isExtraImport": true,
+        "detail": "models",
+        "documentation": {}
+    },
+    {
+        "label": "EmbeddingControllerResponseModel",
+        "importPath": "models",
+        "description": "models",
+        "isExtraImport": true,
+        "detail": "models",
+        "documentation": {}
+    },
+    {
+        "label": "ErrorResponseModel",
+        "importPath": "models",
+        "description": "models",
+        "isExtraImport": true,
+        "detail": "models",
+        "documentation": {}
+    },
+    {
+        "label": "CrossEncoderRerankControllerImpl",
+        "importPath": "implementations",
+        "description": "implementations",
+        "isExtraImport": true,
+        "detail": "implementations",
         "documentation": {}
     },
     {
@@ -456,12 +568,36 @@
         "documentation": {}
     },
     {
+        "label": "ABC",
+        "importPath": "abc",
+        "description": "abc",
+        "isExtraImport": true,
+        "detail": "abc",
+        "documentation": {}
+    },
+    {
+        "label": "abstractmethod",
+        "importPath": "abc",
+        "description": "abc",
+        "isExtraImport": true,
+        "detail": "abc",
+        "documentation": {}
+    },
+    {
         "label": "torch",
         "kind": 6,
         "isExtraImport": true,
         "importPath": "torch",
         "description": "torch",
         "detail": "torch",
+        "documentation": {}
+    },
+    {
+        "label": "BaseModel",
+        "importPath": "pydantic",
+        "description": "pydantic",
+        "isExtraImport": true,
+        "detail": "pydantic",
         "documentation": {}
     },
     {
@@ -564,7 +700,15 @@
         "documentation": {}
     },
     {
-        "label": "EmbedController",
+        "label": "EmbeddingController",
+        "importPath": "controllers",
+        "description": "controllers",
+        "isExtraImport": true,
+        "detail": "controllers",
+        "documentation": {}
+    },
+    {
+        "label": "CrossEncoderRerankController",
         "importPath": "controllers",
         "description": "controllers",
         "isExtraImport": true,
@@ -580,11 +724,20 @@
         "documentation": {}
     },
     {
-        "label": "EmbedController",
+        "label": "CrossEncoderRerankController",
+        "kind": 6,
+        "importPath": "controllers.CrossEncoderRerankController",
+        "description": "controllers.CrossEncoderRerankController",
+        "peekOfCode": "class CrossEncoderRerankController(CrossEncoderRerankControllerImpl):\n    def __init__(self, service: CrossEncoderRerankerService):\n        self.service = service\n        self.router = APIRouter()\n        self.router.add_api_route(\"/ce/reranker\", self.RerankAPI, methods=[\"POST\"])\n    async def RerankAPI(self, request: Request) -> JSONResponse:\n        try:\n            payload = await request.json()\n            req = CrossEncoderRerankRequestModel.model_validate(payload)\n        except Exception as exc:",
+        "detail": "controllers.CrossEncoderRerankController",
+        "documentation": {}
+    },
+    {
+        "label": "EmbeddingController",
         "kind": 6,
         "importPath": "controllers.EmbeddingController",
         "description": "controllers.EmbeddingController",
-        "peekOfCode": "class EmbedController(EmbeddingControllerImpl):\n    def __init__(self, service: EmbeddingService):\n        self.service = service\n        self.router = APIRouter()\n        self.router.add_api_route(\"/embed\", self.EmbedAPI, methods=[\"POST\"])\n    async def EmbedAPI(self, request: Request) -> JSONResponse:\n        try:\n            payload = await request.json()\n            req = EmbedRequestModel.model_validate(payload)\n        except Exception as exc:",
+        "peekOfCode": "class EmbeddingController(EmbeddingControllerImpl):\n    def __init__(self, service: EmbeddingService):\n        self.service = service\n        self.router = APIRouter()\n        self.router.add_api_route(\"/embedding\", self.EmbedAPI, methods=[\"POST\"])\n    async def EmbedAPI(self, request: Request) -> JSONResponse:\n        try:\n            payload = await request.json()\n            req = EmbeddingControllerRequestModel.model_validate(payload)\n        except Exception as exc:",
         "detail": "controllers.EmbeddingController",
         "documentation": {}
     },
@@ -595,6 +748,15 @@
         "description": "enums.ResponseEnums",
         "peekOfCode": "class ResponseStatusEnum(str, Enum):\n    SUCCESS = \"SUCCESS\"\n    VALIDATION_ERROR = \"VALIDATION_ERROR\"\n    SERVER_ERROR = \"SERVER_ERROR\"",
         "detail": "enums.ResponseEnums",
+        "documentation": {}
+    },
+    {
+        "label": "CrossEncoderRerankControllerImpl",
+        "kind": 6,
+        "importPath": "implementations.CrossEncoderRerankControllerImpl",
+        "description": "implementations.CrossEncoderRerankControllerImpl",
+        "peekOfCode": "class CrossEncoderRerankControllerImpl(ABC):\n    @abstractmethod\n    async def RerankAPI(self, request: Request) -> JSONResponse:\n        pass",
+        "detail": "implementations.CrossEncoderRerankControllerImpl",
         "documentation": {}
     },
     {
@@ -643,11 +805,38 @@
         "documentation": {}
     },
     {
-        "label": "EmbedRequestModel",
+        "label": "CrossEncoderRerankRequestModel",
+        "kind": 6,
+        "importPath": "models.CrossEncoderRerankingModel",
+        "description": "models.CrossEncoderRerankingModel",
+        "peekOfCode": "class CrossEncoderRerankRequestModel(BaseModel):\n    query: str\n    docs: list[str]\nclass CrossEncoderRerankItemModel(BaseModel):\n    index: int\n    query: str\n    doc: str\n    score: float\nclass CrossEncoderRerankResponseModel(BaseModel):\n    results: list[CrossEncoderRerankItemModel]",
+        "detail": "models.CrossEncoderRerankingModel",
+        "documentation": {}
+    },
+    {
+        "label": "CrossEncoderRerankItemModel",
+        "kind": 6,
+        "importPath": "models.CrossEncoderRerankingModel",
+        "description": "models.CrossEncoderRerankingModel",
+        "peekOfCode": "class CrossEncoderRerankItemModel(BaseModel):\n    index: int\n    query: str\n    doc: str\n    score: float\nclass CrossEncoderRerankResponseModel(BaseModel):\n    results: list[CrossEncoderRerankItemModel]",
+        "detail": "models.CrossEncoderRerankingModel",
+        "documentation": {}
+    },
+    {
+        "label": "CrossEncoderRerankResponseModel",
+        "kind": 6,
+        "importPath": "models.CrossEncoderRerankingModel",
+        "description": "models.CrossEncoderRerankingModel",
+        "peekOfCode": "class CrossEncoderRerankResponseModel(BaseModel):\n    results: list[CrossEncoderRerankItemModel]",
+        "detail": "models.CrossEncoderRerankingModel",
+        "documentation": {}
+    },
+    {
+        "label": "EmbeddingControllerRequestModel",
         "kind": 6,
         "importPath": "models.EmbeddingServiceModels",
         "description": "models.EmbeddingServiceModels",
-        "peekOfCode": "class EmbedRequestModel(BaseModel):\n    texts: List[str] = []\nclass EmbeddingItemModel(BaseModel):\n    index: int\n    embedding: List[float]\nclass EmbeddingResponseModel(BaseModel):\n    results: List[EmbeddingItemModel]\n    dim: int\nclass ErrorResponseModel(BaseModel):\n    status: str",
+        "peekOfCode": "class EmbeddingControllerRequestModel(BaseModel):\n    texts: List[str] = []\nclass EmbeddingItemModel(BaseModel):\n    index: int\n    embedding: List[float]\nclass EmbeddingControllerResponseModel(BaseModel):\n    results: List[EmbeddingItemModel]\n    dim: int\nclass ErrorResponseModel(BaseModel):\n    status: str",
         "detail": "models.EmbeddingServiceModels",
         "documentation": {}
     },
@@ -656,16 +845,16 @@
         "kind": 6,
         "importPath": "models.EmbeddingServiceModels",
         "description": "models.EmbeddingServiceModels",
-        "peekOfCode": "class EmbeddingItemModel(BaseModel):\n    index: int\n    embedding: List[float]\nclass EmbeddingResponseModel(BaseModel):\n    results: List[EmbeddingItemModel]\n    dim: int\nclass ErrorResponseModel(BaseModel):\n    status: str\n    detail: str",
+        "peekOfCode": "class EmbeddingItemModel(BaseModel):\n    index: int\n    embedding: List[float]\nclass EmbeddingControllerResponseModel(BaseModel):\n    results: List[EmbeddingItemModel]\n    dim: int\nclass ErrorResponseModel(BaseModel):\n    status: str\n    detail: str",
         "detail": "models.EmbeddingServiceModels",
         "documentation": {}
     },
     {
-        "label": "EmbeddingResponseModel",
+        "label": "EmbeddingControllerResponseModel",
         "kind": 6,
         "importPath": "models.EmbeddingServiceModels",
         "description": "models.EmbeddingServiceModels",
-        "peekOfCode": "class EmbeddingResponseModel(BaseModel):\n    results: List[EmbeddingItemModel]\n    dim: int\nclass ErrorResponseModel(BaseModel):\n    status: str\n    detail: str",
+        "peekOfCode": "class EmbeddingControllerResponseModel(BaseModel):\n    results: List[EmbeddingItemModel]\n    dim: int\nclass ErrorResponseModel(BaseModel):\n    status: str\n    detail: str",
         "detail": "models.EmbeddingServiceModels",
         "documentation": {}
     },
@@ -719,16 +908,16 @@
         "kind": 5,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "port = int(os.getenv(\"PORT\", \"8000\"))\nservice = EmbeddingService()\nrerankerService = CrossEncoderRerankerService()\ncontroller = EmbedController(service)\n@asynccontextmanager\nasync def lifespan(app: FastAPI):\n    await asyncio.to_thread(service.LoadModel)\n    await asyncio.to_thread(rerankerService.LoadModel)\n    await service.batcher.start()\n    await rerankerService.batcher.start()",
+        "peekOfCode": "port = int(os.getenv(\"PORT\", \"8000\"))\nembeddingService = EmbeddingService()\nrerankerService = CrossEncoderRerankerService()\nembeddingController = EmbeddingController(embeddingService)\ncrossEncoderRerankerController = CrossEncoderRerankController(rerankerService)\n@asynccontextmanager\nasync def lifespan(app: FastAPI):\n    await asyncio.to_thread(embeddingService.LoadModel)\n    await asyncio.to_thread(rerankerService.LoadModel)\n    await embeddingService.batcher.start()",
         "detail": "main",
         "documentation": {}
     },
     {
-        "label": "service",
+        "label": "embeddingService",
         "kind": 5,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "service = EmbeddingService()\nrerankerService = CrossEncoderRerankerService()\ncontroller = EmbedController(service)\n@asynccontextmanager\nasync def lifespan(app: FastAPI):\n    await asyncio.to_thread(service.LoadModel)\n    await asyncio.to_thread(rerankerService.LoadModel)\n    await service.batcher.start()\n    await rerankerService.batcher.start()\n    try:",
+        "peekOfCode": "embeddingService = EmbeddingService()\nrerankerService = CrossEncoderRerankerService()\nembeddingController = EmbeddingController(embeddingService)\ncrossEncoderRerankerController = CrossEncoderRerankController(rerankerService)\n@asynccontextmanager\nasync def lifespan(app: FastAPI):\n    await asyncio.to_thread(embeddingService.LoadModel)\n    await asyncio.to_thread(rerankerService.LoadModel)\n    await embeddingService.batcher.start()\n    await rerankerService.batcher.start()",
         "detail": "main",
         "documentation": {}
     },
@@ -737,16 +926,25 @@
         "kind": 5,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "rerankerService = CrossEncoderRerankerService()\ncontroller = EmbedController(service)\n@asynccontextmanager\nasync def lifespan(app: FastAPI):\n    await asyncio.to_thread(service.LoadModel)\n    await asyncio.to_thread(rerankerService.LoadModel)\n    await service.batcher.start()\n    await rerankerService.batcher.start()\n    try:\n        if (",
+        "peekOfCode": "rerankerService = CrossEncoderRerankerService()\nembeddingController = EmbeddingController(embeddingService)\ncrossEncoderRerankerController = CrossEncoderRerankController(rerankerService)\n@asynccontextmanager\nasync def lifespan(app: FastAPI):\n    await asyncio.to_thread(embeddingService.LoadModel)\n    await asyncio.to_thread(rerankerService.LoadModel)\n    await embeddingService.batcher.start()\n    await rerankerService.batcher.start()\n    try:",
         "detail": "main",
         "documentation": {}
     },
     {
-        "label": "controller",
+        "label": "embeddingController",
         "kind": 5,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "controller = EmbedController(service)\n@asynccontextmanager\nasync def lifespan(app: FastAPI):\n    await asyncio.to_thread(service.LoadModel)\n    await asyncio.to_thread(rerankerService.LoadModel)\n    await service.batcher.start()\n    await rerankerService.batcher.start()\n    try:\n        if (\n            torch.cuda.is_available()",
+        "peekOfCode": "embeddingController = EmbeddingController(embeddingService)\ncrossEncoderRerankerController = CrossEncoderRerankController(rerankerService)\n@asynccontextmanager\nasync def lifespan(app: FastAPI):\n    await asyncio.to_thread(embeddingService.LoadModel)\n    await asyncio.to_thread(rerankerService.LoadModel)\n    await embeddingService.batcher.start()\n    await rerankerService.batcher.start()\n    try:\n        if (",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "crossEncoderRerankerController",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "crossEncoderRerankerController = CrossEncoderRerankController(rerankerService)\n@asynccontextmanager\nasync def lifespan(app: FastAPI):\n    await asyncio.to_thread(embeddingService.LoadModel)\n    await asyncio.to_thread(rerankerService.LoadModel)\n    await embeddingService.batcher.start()\n    await rerankerService.batcher.start()\n    try:\n        if (\n            torch.cuda.is_available()",
         "detail": "main",
         "documentation": {}
     },
@@ -755,7 +953,7 @@
         "kind": 5,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "app = FastAPI(lifespan=lifespan)\napp.add_middleware(\n    CORSMiddleware,\n    allow_origins=[\"*\"],\n    allow_credentials=True,\n    allow_methods=[\"*\"],\n    allow_headers=[\"*\"],\n)\napp.add_middleware(GZipMiddleware, minimum_size=500)\napp.include_router(controller.router)",
+        "peekOfCode": "app = FastAPI(lifespan=lifespan)\napp.add_middleware(\n    CORSMiddleware,\n    allow_origins=[\"*\"],\n    allow_credentials=True,\n    allow_methods=[\"*\"],\n    allow_headers=[\"*\"],\n)\napp.add_middleware(GZipMiddleware, minimum_size=800)\napp.include_router(embeddingController.router, prefix=\"/api/v1\")",
         "detail": "main",
         "documentation": {}
     }
