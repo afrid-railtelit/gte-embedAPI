@@ -24,6 +24,7 @@ class CrossEncoderRerankController(CrossEncoderRerankControllerImpl):
             payload = await request.json()
             req = CrossEncoderRerankRequestModel.model_validate(payload)
         except Exception as exc:
+            print("Log1")
             err = ErrorResponseModel(
                 status=ResponseStatusEnum.VALIDATION_ERROR.value, detail=str(exc)
             )
@@ -35,7 +36,7 @@ class CrossEncoderRerankController(CrossEncoderRerankControllerImpl):
         try:
             ranked_results = await self.service.Rerank(query, docs)
             items: List[Any] = []
-            for _, (docIndex, (query, doc), score) in enumerate(ranked_results):
+            for docIndex, doc, score in ranked_results:
                 if returnDocs:
                     item = CrossEncoderRerankItemModel(
                         index=docIndex, doc=doc, score=score
@@ -49,6 +50,8 @@ class CrossEncoderRerankController(CrossEncoderRerankControllerImpl):
             resp = CrossEncoderRerankResponseModel(results=items, query=query)
             return JSONResponse(status_code=200, content=resp.model_dump())
         except ValueError as exc:
+            print("Log1")
+
             err = ErrorResponseModel(
                 status=ResponseStatusEnum.VALIDATION_ERROR.value, detail=str(exc)
             )
