@@ -37,10 +37,12 @@ class CrossEncoderRerankController(CrossEncoderRerankControllerImpl):
             ranked_results = await self.service.Rerank(query, docs)
             items: List[Any] = []
             for docIndex, doc, score in ranked_results:
+                if returnDocs:
+                    item = CrossEncoderRerankItemModel(index=docIndex, doc=doc, score=score)
+                else:
+                    item = CrossEncoderRerankItemModel(index=docIndex, score=score)
+                items.append(item)
 
-                item = CrossEncoderRerankItemModel(
-                    index=docIndex, doc=doc if returnDocs else doc, score=score
-                )
                 items.append(item)
 
             resp = CrossEncoderRerankResponseModel(results=items, query=query)
