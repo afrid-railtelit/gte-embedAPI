@@ -17,9 +17,9 @@ Blazing fast **embedding** and **cross-encoder reranker** service optimized for 
 ## Minimal integration flow
 
 1. `POST /api/v1/embedding` → get embeddings for documents/nodes.
-2. Index embeddings into a vector store (FAISS / Milvus / Weaviate / etc.).
+2. Index embeddings into a vector store (FAISS / postgresql(pgvector) / etc.).
 3. On user query: retrieve candidates from vector store.
-4. `POST /rerank` with `query` + `documents` → get final top‑N.
+4. `POST /api/v1/ce/reranker` with `query` + `documents` → get final top‑N.
 5. Send top‑N to your LLM as context for generation.
 
 ## API (examples)
@@ -60,11 +60,9 @@ Response:
 {
   "results":[
     {
-      "docIndex"::17,
+    "docIndex"::17,
     "doctext":"",
-    "score":0.95..
-
-
+    "score":0.99951171875
     }, ...
 
   ],
@@ -72,7 +70,6 @@ Response:
 
 }
 
-[{ "doc": "candidate A", "score": 0.95 }, ...]
 ```
 
 ## Environment (example `.env`)
@@ -100,7 +97,7 @@ MAX_CE_RE_RANKER_BACTH_REQUEST_DELAY = 5
 
 ```bash
 git clone https://github.com/afrid/embedhub.git
-cd <repo>
+cd embedhub
 pip install -r requirements.txt
 uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000} --workers 1
 ```
@@ -109,3 +106,4 @@ uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000} --workers 1
 
 - Clean modular layout (controllers, services, implementations) for easy model swap and performance tuning.
 - Use this as an SDK component inside a RAG pipeline: embedding + indexing + retrieval + rerank → generator.
+
