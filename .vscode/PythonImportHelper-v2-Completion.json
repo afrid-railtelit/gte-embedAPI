@@ -809,7 +809,7 @@
         "kind": 6,
         "importPath": "models.CrossEncoderRerankingModel",
         "description": "models.CrossEncoderRerankingModel",
-        "peekOfCode": "class CrossEncoderRerankRequestModel(BaseModel):\n    query: str\n    docs: list[str]\n    returnDocuments:bool = False\nclass CrossEncoderRerankItemModel(BaseModel):\n    index: int\n    doc: str | None = None \n    score: float\nclass CrossEncoderRerankResponseModel(BaseModel):\n    results: list[CrossEncoderRerankItemModel]",
+        "peekOfCode": "class CrossEncoderRerankRequestModel(BaseModel):\n    query: str\n    docs: list[str]\n    returnDocuments: bool = False\n    topN: int = 10\nclass CrossEncoderRerankItemModel(BaseModel):\n    index: int\n    doc: str | None = None\n    score: float\nclass CrossEncoderRerankResponseModel(BaseModel):",
         "detail": "models.CrossEncoderRerankingModel",
         "documentation": {}
     },
@@ -818,7 +818,7 @@
         "kind": 6,
         "importPath": "models.CrossEncoderRerankingModel",
         "description": "models.CrossEncoderRerankingModel",
-        "peekOfCode": "class CrossEncoderRerankItemModel(BaseModel):\n    index: int\n    doc: str | None = None \n    score: float\nclass CrossEncoderRerankResponseModel(BaseModel):\n    results: list[CrossEncoderRerankItemModel]\n    query: str",
+        "peekOfCode": "class CrossEncoderRerankItemModel(BaseModel):\n    index: int\n    doc: str | None = None\n    score: float\nclass CrossEncoderRerankResponseModel(BaseModel):\n    results: list[CrossEncoderRerankItemModel]\n    query: str",
         "detail": "models.CrossEncoderRerankingModel",
         "documentation": {}
     },
