@@ -20,7 +20,7 @@ crossEncoderRerankerController = CrossEncoderRerankController(rerankerService)
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await asyncio.to_thread(embeddingService.LoadModel)
-    await asyncio.to_thread(rerankerService.LoadModel)
+    await rerankerService.LoadModel()
     await embeddingService.batcher.start()
     await rerankerService.batcher.start()
 

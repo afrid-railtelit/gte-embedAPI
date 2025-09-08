@@ -908,7 +908,7 @@
         "kind": 5,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "port = int(os.getenv(\"PORT\", \"8000\"))\nembeddingService = EmbeddingService()\nrerankerService = CrossEncoderRerankerService()\nembeddingController = EmbeddingController(embeddingService)\ncrossEncoderRerankerController = CrossEncoderRerankController(rerankerService)\n@asynccontextmanager\nasync def lifespan(app: FastAPI):\n    await asyncio.to_thread(embeddingService.LoadModel)\n    await asyncio.to_thread(rerankerService.LoadModel)\n    await embeddingService.batcher.start()",
+        "peekOfCode": "port = int(os.getenv(\"PORT\", \"8000\"))\nembeddingService = EmbeddingService()\nrerankerService = CrossEncoderRerankerService()\nembeddingController = EmbeddingController(embeddingService)\ncrossEncoderRerankerController = CrossEncoderRerankController(rerankerService)\n@asynccontextmanager\nasync def lifespan(app: FastAPI):\n    await asyncio.to_thread(embeddingService.LoadModel)\n    await rerankerService.LoadModel()\n    await embeddingService.batcher.start()",
         "detail": "main",
         "documentation": {}
     },
@@ -917,7 +917,7 @@
         "kind": 5,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "embeddingService = EmbeddingService()\nrerankerService = CrossEncoderRerankerService()\nembeddingController = EmbeddingController(embeddingService)\ncrossEncoderRerankerController = CrossEncoderRerankController(rerankerService)\n@asynccontextmanager\nasync def lifespan(app: FastAPI):\n    await asyncio.to_thread(embeddingService.LoadModel)\n    await asyncio.to_thread(rerankerService.LoadModel)\n    await embeddingService.batcher.start()\n    await rerankerService.batcher.start()",
+        "peekOfCode": "embeddingService = EmbeddingService()\nrerankerService = CrossEncoderRerankerService()\nembeddingController = EmbeddingController(embeddingService)\ncrossEncoderRerankerController = CrossEncoderRerankController(rerankerService)\n@asynccontextmanager\nasync def lifespan(app: FastAPI):\n    await asyncio.to_thread(embeddingService.LoadModel)\n    await rerankerService.LoadModel()\n    await embeddingService.batcher.start()\n    await rerankerService.batcher.start()",
         "detail": "main",
         "documentation": {}
     },
@@ -926,7 +926,7 @@
         "kind": 5,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "rerankerService = CrossEncoderRerankerService()\nembeddingController = EmbeddingController(embeddingService)\ncrossEncoderRerankerController = CrossEncoderRerankController(rerankerService)\n@asynccontextmanager\nasync def lifespan(app: FastAPI):\n    await asyncio.to_thread(embeddingService.LoadModel)\n    await asyncio.to_thread(rerankerService.LoadModel)\n    await embeddingService.batcher.start()\n    await rerankerService.batcher.start()\n    try:",
+        "peekOfCode": "rerankerService = CrossEncoderRerankerService()\nembeddingController = EmbeddingController(embeddingService)\ncrossEncoderRerankerController = CrossEncoderRerankController(rerankerService)\n@asynccontextmanager\nasync def lifespan(app: FastAPI):\n    await asyncio.to_thread(embeddingService.LoadModel)\n    await rerankerService.LoadModel()\n    await embeddingService.batcher.start()\n    await rerankerService.batcher.start()\n    try:",
         "detail": "main",
         "documentation": {}
     },
@@ -935,7 +935,7 @@
         "kind": 5,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "embeddingController = EmbeddingController(embeddingService)\ncrossEncoderRerankerController = CrossEncoderRerankController(rerankerService)\n@asynccontextmanager\nasync def lifespan(app: FastAPI):\n    await asyncio.to_thread(embeddingService.LoadModel)\n    await asyncio.to_thread(rerankerService.LoadModel)\n    await embeddingService.batcher.start()\n    await rerankerService.batcher.start()\n    try:\n        if (",
+        "peekOfCode": "embeddingController = EmbeddingController(embeddingService)\ncrossEncoderRerankerController = CrossEncoderRerankController(rerankerService)\n@asynccontextmanager\nasync def lifespan(app: FastAPI):\n    await asyncio.to_thread(embeddingService.LoadModel)\n    await rerankerService.LoadModel()\n    await embeddingService.batcher.start()\n    await rerankerService.batcher.start()\n    try:\n        if (",
         "detail": "main",
         "documentation": {}
     },
@@ -944,7 +944,7 @@
         "kind": 5,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "crossEncoderRerankerController = CrossEncoderRerankController(rerankerService)\n@asynccontextmanager\nasync def lifespan(app: FastAPI):\n    await asyncio.to_thread(embeddingService.LoadModel)\n    await asyncio.to_thread(rerankerService.LoadModel)\n    await embeddingService.batcher.start()\n    await rerankerService.batcher.start()\n    try:\n        if (\n            torch.cuda.is_available()",
+        "peekOfCode": "crossEncoderRerankerController = CrossEncoderRerankController(rerankerService)\n@asynccontextmanager\nasync def lifespan(app: FastAPI):\n    await asyncio.to_thread(embeddingService.LoadModel)\n    await rerankerService.LoadModel()\n    await embeddingService.batcher.start()\n    await rerankerService.batcher.start()\n    try:\n        if (\n            torch.cuda.is_available()",
         "detail": "main",
         "documentation": {}
     },
