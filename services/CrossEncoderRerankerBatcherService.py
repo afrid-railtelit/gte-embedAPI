@@ -1,7 +1,9 @@
 import asyncio
 from typing import List, Tuple, Any, Callable
+from implementations import CrossEncoderRerankerBatcherServiceImpl
 
-class CrossEncoderRerankerBatcherService:
+
+class CrossEncoderRerankerBatcherService(CrossEncoderRerankerBatcherServiceImpl):
     def __init__(
         self,
         callFn: Callable[[List[Tuple[str, str]]], List[float]],
@@ -14,7 +16,7 @@ class CrossEncoderRerankerBatcherService:
         self.queue: Any = asyncio.Queue()
         self.task = None
 
-    async def start(self):
+    async def start(self) -> None:
         if self.task is None:
             self.task = asyncio.create_task(self._runLoop())
 
@@ -24,7 +26,7 @@ class CrossEncoderRerankerBatcherService:
         await self.queue.put((pairs, future))
         return await future
 
-    async def _runLoop(self):
+    async def _runLoop(self) -> None:
         while True:
             allPairs: List[Tuple[str, str]] = []
             allFutures: List[Any] = []

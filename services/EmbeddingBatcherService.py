@@ -1,8 +1,9 @@
 import asyncio
 from typing import List, Any, Callable
+from implementations import EmbeddingServiceBatcherServiceImpl
 
 
-class EmbeddingBatcherService:
+class EmbeddingBatcherService(EmbeddingServiceBatcherServiceImpl):
     def __init__(
         self,
         callFn: Callable[[List[str]], List[Any]],
@@ -15,7 +16,7 @@ class EmbeddingBatcherService:
         self.queue: Any = asyncio.Queue()
         self.task = None
 
-    async def start(self):
+    async def start(self) -> None:
         if self.task is None:
             self.task = asyncio.create_task(self._runLoop())
 
@@ -25,7 +26,7 @@ class EmbeddingBatcherService:
         await self.queue.put((texts, future))
         return await future
 
-    async def _runLoop(self):
+    async def _runLoop(self) -> None:
         while True:
             allTexts: List[str] = []
             allFutures: List[Any] = []

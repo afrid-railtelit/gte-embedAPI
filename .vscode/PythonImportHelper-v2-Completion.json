@@ -24,6 +24,62 @@
         "documentation": {}
     },
     {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Tuple",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Tuple",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
         "label": "List",
         "importPath": "typing",
         "description": "typing",
@@ -280,6 +336,30 @@
         "documentation": {}
     },
     {
+        "label": "CrossEncoderRerankerBatcherServiceImpl",
+        "importPath": "implementations",
+        "description": "implementations",
+        "isExtraImport": true,
+        "detail": "implementations",
+        "documentation": {}
+    },
+    {
+        "label": "CrossEncoderRerankerServiceImpl",
+        "importPath": "implementations",
+        "description": "implementations",
+        "isExtraImport": true,
+        "detail": "implementations",
+        "documentation": {}
+    },
+    {
+        "label": "EmbeddingServiceBatcherServiceImpl",
+        "importPath": "implementations",
+        "description": "implementations",
+        "isExtraImport": true,
+        "detail": "implementations",
+        "documentation": {}
+    },
+    {
         "label": "EmbeddingServiceImpl",
         "importPath": "implementations",
         "description": "implementations",
@@ -293,6 +373,54 @@
         "description": "enum",
         "isExtraImport": true,
         "detail": "enum",
+        "documentation": {}
+    },
+    {
+        "label": "ABC",
+        "importPath": "abc",
+        "description": "abc",
+        "isExtraImport": true,
+        "detail": "abc",
+        "documentation": {}
+    },
+    {
+        "label": "abstractmethod",
+        "importPath": "abc",
+        "description": "abc",
+        "isExtraImport": true,
+        "detail": "abc",
+        "documentation": {}
+    },
+    {
+        "label": "ABC",
+        "importPath": "abc",
+        "description": "abc",
+        "isExtraImport": true,
+        "detail": "abc",
+        "documentation": {}
+    },
+    {
+        "label": "abstractmethod",
+        "importPath": "abc",
+        "description": "abc",
+        "isExtraImport": true,
+        "detail": "abc",
+        "documentation": {}
+    },
+    {
+        "label": "ABC",
+        "importPath": "abc",
+        "description": "abc",
+        "isExtraImport": true,
+        "detail": "abc",
+        "documentation": {}
+    },
+    {
+        "label": "abstractmethod",
+        "importPath": "abc",
+        "description": "abc",
+        "isExtraImport": true,
+        "detail": "abc",
         "documentation": {}
     },
     {
@@ -470,12 +598,39 @@
         "documentation": {}
     },
     {
+        "label": "CrossEncoderRerankerBatcherServiceImpl",
+        "kind": 6,
+        "importPath": "implementations.CrossEncoderRerankerBatcherServiceImpl",
+        "description": "implementations.CrossEncoderRerankerBatcherServiceImpl",
+        "peekOfCode": "class CrossEncoderRerankerBatcherServiceImpl(ABC):\n    @abstractmethod\n    async def start(self) -> None:\n        pass\n    @abstractmethod\n    async def submit(self, pairs: List[Tuple[str, str]]) -> List[Any]:\n        pass\n    @abstractmethod\n    async def _runLoop(self) -> None:\n        pass",
+        "detail": "implementations.CrossEncoderRerankerBatcherServiceImpl",
+        "documentation": {}
+    },
+    {
+        "label": "CrossEncoderRerankerServiceImpl",
+        "kind": 6,
+        "importPath": "implementations.CrossEncoderRerankerServiceImpl",
+        "description": "implementations.CrossEncoderRerankerServiceImpl",
+        "peekOfCode": "class CrossEncoderRerankerServiceImpl(ABC):\n    @abstractmethod\n    async def LoadModel(self) -> None:\n        pass\n    @abstractmethod\n    async def ScoreBatched(self, pairs: List[Tuple[str, str]]) -> List[float]:\n        pass\n    @abstractmethod\n    def Score(self, pairs: List[Tuple[str, str]]) -> List[float]:\n        pass",
+        "detail": "implementations.CrossEncoderRerankerServiceImpl",
+        "documentation": {}
+    },
+    {
         "label": "EmbeddingControllerImpl",
         "kind": 6,
         "importPath": "implementations.EmbeddingControllerImpl",
         "description": "implementations.EmbeddingControllerImpl",
         "peekOfCode": "class EmbeddingControllerImpl(ABC):\n    @abstractmethod\n    async def EmbedAPI(self, request: Request) -> JSONResponse:\n        pass",
         "detail": "implementations.EmbeddingControllerImpl",
+        "documentation": {}
+    },
+    {
+        "label": "EmbeddingServiceBatcherServiceImpl",
+        "kind": 6,
+        "importPath": "implementations.EmbeddingServiceBatcherServiceImpl",
+        "description": "implementations.EmbeddingServiceBatcherServiceImpl",
+        "peekOfCode": "class EmbeddingServiceBatcherServiceImpl(ABC):\n    @abstractmethod\n    async def start(self) -> None:\n        pass\n    @abstractmethod\n    async def submit(self, texts: List[str]) -> List[Any]:\n        pass\n    @abstractmethod\n    async def _runLoop(self) -> None:\n        pass",
+        "detail": "implementations.EmbeddingServiceBatcherServiceImpl",
         "documentation": {}
     },
     {
@@ -528,7 +683,7 @@
         "kind": 6,
         "importPath": "services.CrossEncoderRerankerBatcherService",
         "description": "services.CrossEncoderRerankerBatcherService",
-        "peekOfCode": "class CrossEncoderRerankerBatcherService:\n    def __init__(\n        self,\n        callFn: Callable[[List[Tuple[str, str]]], List[float]],\n        maxBatchSize: int = 50,\n        maxDelayMs: int = 5,\n    ):\n        self.callFn = callFn\n        self.maxBatchSize = maxBatchSize\n        self.maxDelay = maxDelayMs / 1000.0",
+        "peekOfCode": "class CrossEncoderRerankerBatcherService(CrossEncoderRerankerBatcherServiceImpl):\n    def __init__(\n        self,\n        callFn: Callable[[List[Tuple[str, str]]], List[float]],\n        maxBatchSize: int = 50,\n        maxDelayMs: int = 5,\n    ):\n        self.callFn = callFn\n        self.maxBatchSize = maxBatchSize\n        self.maxDelay = maxDelayMs / 1000.0",
         "detail": "services.CrossEncoderRerankerBatcherService",
         "documentation": {}
     },
@@ -537,7 +692,7 @@
         "kind": 6,
         "importPath": "services.CrossEncoderRerankerService",
         "description": "services.CrossEncoderRerankerService",
-        "peekOfCode": "class CrossEncoderRerankerService:\n    def __init__(self):\n        self.batcher: CrossEncoderRerankerBatcherService = (\n            CrossEncoderRerankerBatcherService(\n                self.Score, maxBatchSize=100, maxDelayMs=5\n            )\n        )\n        self._initialized = False\n        self._lock = asyncio.Lock()\n    async def LoadModel(self) -> None:",
+        "peekOfCode": "class CrossEncoderRerankerService(CrossEncoderRerankerServiceImpl):\n    def __init__(self):\n        self.batcher: CrossEncoderRerankerBatcherService = (\n            CrossEncoderRerankerBatcherService(\n                self.Score, maxBatchSize=100, maxDelayMs=5\n            )\n        )\n        self._initialized = False\n        self._lock = asyncio.Lock()\n    async def LoadModel(self) -> None:",
         "detail": "services.CrossEncoderRerankerService",
         "documentation": {}
     },
@@ -546,7 +701,7 @@
         "kind": 6,
         "importPath": "services.EmbeddingBatcherService",
         "description": "services.EmbeddingBatcherService",
-        "peekOfCode": "class EmbeddingBatcherService:\n    def __init__(\n        self,\n        callFn: Callable[[List[str]], List[Any]],\n        maxBatchSize: int = 16,\n        maxDelayMs: int = 10,\n    ):\n        self.callFn = callFn\n        self.maxBatchSize = maxBatchSize\n        self.maxDelay = maxDelayMs / 1000.0",
+        "peekOfCode": "class EmbeddingBatcherService(EmbeddingServiceBatcherServiceImpl):\n    def __init__(\n        self,\n        callFn: Callable[[List[str]], List[Any]],\n        maxBatchSize: int = 16,\n        maxDelayMs: int = 10,\n    ):\n        self.callFn = callFn\n        self.maxBatchSize = maxBatchSize\n        self.maxDelay = maxDelayMs / 1000.0",
         "detail": "services.EmbeddingBatcherService",
         "documentation": {}
     },

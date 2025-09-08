@@ -5,6 +5,7 @@ from transformers import AutoModelForSequenceClassification, AutoTokenizer
 from services.CrossEncoderRerankerBatcherService import (
     CrossEncoderRerankerBatcherService,
 )
+from implementations import CrossEncoderRerankerServiceImpl
 
 modelName: str = "ncbi/MedCPT-Cross-Encoder"
 maxLength: int = 512
@@ -17,7 +18,7 @@ model: Any = None
 keepaliveTask: Any = None
 
 
-class CrossEncoderRerankerService:
+class CrossEncoderRerankerService(CrossEncoderRerankerServiceImpl):
     def __init__(self):
         self.batcher: CrossEncoderRerankerBatcherService = (
             CrossEncoderRerankerBatcherService(
