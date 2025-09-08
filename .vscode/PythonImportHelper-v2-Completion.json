@@ -1,0 +1,476 @@
+[
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Callable",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "cast",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "APIRouter",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "Request",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "Request",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "FastAPI",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "JSONResponse",
+        "importPath": "fastapi.responses",
+        "description": "fastapi.responses",
+        "isExtraImport": true,
+        "detail": "fastapi.responses",
+        "documentation": {}
+    },
+    {
+        "label": "JSONResponse",
+        "importPath": "fastapi.responses",
+        "description": "fastapi.responses",
+        "isExtraImport": true,
+        "detail": "fastapi.responses",
+        "documentation": {}
+    },
+    {
+        "label": "ResponseStatusEnum",
+        "importPath": "enums",
+        "description": "enums",
+        "isExtraImport": true,
+        "detail": "enums",
+        "documentation": {}
+    },
+    {
+        "label": "EmbedRequestModel",
+        "importPath": "models",
+        "description": "models",
+        "isExtraImport": true,
+        "detail": "models",
+        "documentation": {}
+    },
+    {
+        "label": "EmbeddingItemModel",
+        "importPath": "models",
+        "description": "models",
+        "isExtraImport": true,
+        "detail": "models",
+        "documentation": {}
+    },
+    {
+        "label": "EmbedResultModel",
+        "importPath": "models",
+        "description": "models",
+        "isExtraImport": true,
+        "detail": "models",
+        "documentation": {}
+    },
+    {
+        "label": "ErrorResponseModel",
+        "importPath": "models",
+        "description": "models",
+        "isExtraImport": true,
+        "detail": "models",
+        "documentation": {}
+    },
+    {
+        "label": "GteEmbedService",
+        "importPath": "services",
+        "description": "services",
+        "isExtraImport": true,
+        "detail": "services",
+        "documentation": {}
+    },
+    {
+        "label": "GteEmbedService",
+        "importPath": "services",
+        "description": "services",
+        "isExtraImport": true,
+        "detail": "services",
+        "documentation": {}
+    },
+    {
+        "label": "GteEmbedControllerImpl",
+        "importPath": "implementations",
+        "description": "implementations",
+        "isExtraImport": true,
+        "detail": "implementations",
+        "documentation": {}
+    },
+    {
+        "label": "GteEmbedServiceImpl",
+        "importPath": "implementations",
+        "description": "implementations",
+        "isExtraImport": true,
+        "detail": "implementations",
+        "documentation": {}
+    },
+    {
+        "label": "Enum",
+        "importPath": "enum",
+        "description": "enum",
+        "isExtraImport": true,
+        "detail": "enum",
+        "documentation": {}
+    },
+    {
+        "label": "ABC",
+        "importPath": "abc",
+        "description": "abc",
+        "isExtraImport": true,
+        "detail": "abc",
+        "documentation": {}
+    },
+    {
+        "label": "abstractmethod",
+        "importPath": "abc",
+        "description": "abc",
+        "isExtraImport": true,
+        "detail": "abc",
+        "documentation": {}
+    },
+    {
+        "label": "ABC",
+        "importPath": "abc",
+        "description": "abc",
+        "isExtraImport": true,
+        "detail": "abc",
+        "documentation": {}
+    },
+    {
+        "label": "abstractmethod",
+        "importPath": "abc",
+        "description": "abc",
+        "isExtraImport": true,
+        "detail": "abc",
+        "documentation": {}
+    },
+    {
+        "label": "torch",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "torch",
+        "description": "torch",
+        "detail": "torch",
+        "documentation": {}
+    },
+    {
+        "label": "BaseModel",
+        "importPath": "pydantic",
+        "description": "pydantic",
+        "isExtraImport": true,
+        "detail": "pydantic",
+        "documentation": {}
+    },
+    {
+        "label": "asyncio",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "asyncio",
+        "description": "asyncio",
+        "detail": "asyncio",
+        "documentation": {}
+    },
+    {
+        "label": "AutoModel",
+        "importPath": "transformers",
+        "description": "transformers",
+        "isExtraImport": true,
+        "detail": "transformers",
+        "documentation": {}
+    },
+    {
+        "label": "AutoTokenizer",
+        "importPath": "transformers",
+        "description": "transformers",
+        "isExtraImport": true,
+        "detail": "transformers",
+        "documentation": {}
+    },
+    {
+        "label": "GteEmbedBatcherService",
+        "importPath": "services.GteEmbedBatcherService",
+        "description": "services.GteEmbedBatcherService",
+        "isExtraImport": true,
+        "detail": "services.GteEmbedBatcherService",
+        "documentation": {}
+    },
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "asynccontextmanager",
+        "importPath": "contextlib",
+        "description": "contextlib",
+        "isExtraImport": true,
+        "detail": "contextlib",
+        "documentation": {}
+    },
+    {
+        "label": "uvicorn",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "uvicorn",
+        "description": "uvicorn",
+        "detail": "uvicorn",
+        "documentation": {}
+    },
+    {
+        "label": "GZipMiddleware",
+        "importPath": "fastapi.middleware.gzip",
+        "description": "fastapi.middleware.gzip",
+        "isExtraImport": true,
+        "detail": "fastapi.middleware.gzip",
+        "documentation": {}
+    },
+    {
+        "label": "EmbedController",
+        "importPath": "controllers",
+        "description": "controllers",
+        "isExtraImport": true,
+        "detail": "controllers",
+        "documentation": {}
+    },
+    {
+        "label": "CORSMiddleware",
+        "importPath": "fastapi.middleware.cors",
+        "description": "fastapi.middleware.cors",
+        "isExtraImport": true,
+        "detail": "fastapi.middleware.cors",
+        "documentation": {}
+    },
+    {
+        "label": "EmbedController",
+        "kind": 6,
+        "importPath": "controllers.GteEmbedController",
+        "description": "controllers.GteEmbedController",
+        "peekOfCode": "class EmbedController(GteEmbedControllerImpl):\n    def __init__(self, service: GteEmbedService):\n        self.service = service\n        self.router = APIRouter()\n        self.router.add_api_route(\"/embed\", self.EmbedAPI, methods=[\"POST\"])\n    async def EmbedAPI(self, request: Request) -> JSONResponse:\n        try:\n            payload = await request.json()\n            req = EmbedRequestModel.model_validate(payload)\n        except Exception as exc:",
+        "detail": "controllers.GteEmbedController",
+        "documentation": {}
+    },
+    {
+        "label": "ResponseStatusEnum",
+        "kind": 6,
+        "importPath": "enums.ResponseEnums",
+        "description": "enums.ResponseEnums",
+        "peekOfCode": "class ResponseStatusEnum(str, Enum):\n    SUCCESS = \"SUCCESS\"\n    VALIDATION_ERROR = \"VALIDATION_ERROR\"\n    SERVER_ERROR = \"SERVER_ERROR\"",
+        "detail": "enums.ResponseEnums",
+        "documentation": {}
+    },
+    {
+        "label": "GteEmbedControllerImpl",
+        "kind": 6,
+        "importPath": "implementations.GteEmbedControllerImpl",
+        "description": "implementations.GteEmbedControllerImpl",
+        "peekOfCode": "class GteEmbedControllerImpl(ABC):\n    @abstractmethod\n    async def EmbedAPI(self, request: Request) -> JSONResponse:\n        pass",
+        "detail": "implementations.GteEmbedControllerImpl",
+        "documentation": {}
+    },
+    {
+        "label": "GteEmbedServiceImpl",
+        "kind": 6,
+        "importPath": "implementations.GteEmbedServiceImpl",
+        "description": "implementations.GteEmbedServiceImpl",
+        "peekOfCode": "class GteEmbedServiceImpl(ABC):\n    @abstractmethod\n    def LoadModel(self) -> None:\n        pass\n    @abstractmethod\n    def MeanPool(self, lastHidden: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:\n        pass\n    @abstractmethod\n    def Embed(self, texts: List[str]) -> List[List[float]]:\n        pass",
+        "detail": "implementations.GteEmbedServiceImpl",
+        "documentation": {}
+    },
+    {
+        "label": "EmbedRequestModel",
+        "kind": 6,
+        "importPath": "models.GteEmbedModels",
+        "description": "models.GteEmbedModels",
+        "peekOfCode": "class EmbedRequestModel(BaseModel):\n    texts: List[str] = []\nclass EmbeddingItemModel(BaseModel):\n    index: int\n    embedding: List[float]\nclass EmbedResultModel(BaseModel):\n    results: List[EmbeddingItemModel]\n    dim: int\n    modelLatencyMs: float\nclass ErrorResponseModel(BaseModel):",
+        "detail": "models.GteEmbedModels",
+        "documentation": {}
+    },
+    {
+        "label": "EmbeddingItemModel",
+        "kind": 6,
+        "importPath": "models.GteEmbedModels",
+        "description": "models.GteEmbedModels",
+        "peekOfCode": "class EmbeddingItemModel(BaseModel):\n    index: int\n    embedding: List[float]\nclass EmbedResultModel(BaseModel):\n    results: List[EmbeddingItemModel]\n    dim: int\n    modelLatencyMs: float\nclass ErrorResponseModel(BaseModel):\n    status: str\n    detail: str",
+        "detail": "models.GteEmbedModels",
+        "documentation": {}
+    },
+    {
+        "label": "EmbedResultModel",
+        "kind": 6,
+        "importPath": "models.GteEmbedModels",
+        "description": "models.GteEmbedModels",
+        "peekOfCode": "class EmbedResultModel(BaseModel):\n    results: List[EmbeddingItemModel]\n    dim: int\n    modelLatencyMs: float\nclass ErrorResponseModel(BaseModel):\n    status: str\n    detail: str",
+        "detail": "models.GteEmbedModels",
+        "documentation": {}
+    },
+    {
+        "label": "ErrorResponseModel",
+        "kind": 6,
+        "importPath": "models.GteEmbedModels",
+        "description": "models.GteEmbedModels",
+        "peekOfCode": "class ErrorResponseModel(BaseModel):\n    status: str\n    detail: str",
+        "detail": "models.GteEmbedModels",
+        "documentation": {}
+    },
+    {
+        "label": "GteEmbedBatcherService",
+        "kind": 6,
+        "importPath": "services.GteEmbedBatcherService",
+        "description": "services.GteEmbedBatcherService",
+        "peekOfCode": "class GteEmbedBatcherService:\n    def __init__(\n        self,\n        callFn: Callable[[List[str]], List[Any]],\n        maxBatchSize: int = 16,\n        maxDelayMs: int = 10,\n    ):\n        self.callFn = callFn\n        self.maxBatchSize = maxBatchSize\n        self.maxDelay = maxDelayMs / 1000.0",
+        "detail": "services.GteEmbedBatcherService",
+        "documentation": {}
+    },
+    {
+        "label": "GteEmbedService",
+        "kind": 6,
+        "importPath": "services.GteEmbedService",
+        "description": "services.GteEmbedService",
+        "peekOfCode": "class GteEmbedService(GteEmbedServiceImpl):\n    def LoadModel(self) -> None:\n        torch.backends.cudnn.benchmark = True\n        global tokenizer, model, keepaliveTask\n        if tokenizer is not None and model is not None:\n            return\n        tokenizer = cast(Any, AutoTokenizer).from_pretrained(modelName, use_fast=True)\n        dtype = torch.float16 if torch.cuda.is_available() else torch.float32\n        model = cast(Any, AutoModel).from_pretrained(modelName, dtype=dtype)\n        if torch.cuda.is_available():",
+        "detail": "services.GteEmbedService",
+        "documentation": {}
+    },
+    {
+        "label": "port",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "port = int(os.getenv(\"PORT\", \"8000\"))\nservice = GteEmbedService()\ncontroller = EmbedController(service)\n@asynccontextmanager\nasync def lifespan(app: FastAPI):\n    await asyncio.to_thread(service.LoadModel)\n    await service.batcher.start()\n    try:\n        if (\n            torch.cuda.is_available()",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "service",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "service = GteEmbedService()\ncontroller = EmbedController(service)\n@asynccontextmanager\nasync def lifespan(app: FastAPI):\n    await asyncio.to_thread(service.LoadModel)\n    await service.batcher.start()\n    try:\n        if (\n            torch.cuda.is_available()\n            and getattr(__import__(\"services\").GteEmbedService, \"keepaliveTask\", None)",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "controller",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "controller = EmbedController(service)\n@asynccontextmanager\nasync def lifespan(app: FastAPI):\n    await asyncio.to_thread(service.LoadModel)\n    await service.batcher.start()\n    try:\n        if (\n            torch.cuda.is_available()\n            and getattr(__import__(\"services\").GteEmbedService, \"keepaliveTask\", None)\n            is None",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "app",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "app = FastAPI(lifespan=lifespan)\napp.add_middleware(\n    CORSMiddleware,\n    allow_origins=[\"*\"],\n    allow_credentials=True,\n    allow_methods=[\"*\"],\n    allow_headers=[\"*\"],\n)\napp.add_middleware(GZipMiddleware, minimum_size=500)\napp.include_router(controller.router)",
+        "detail": "main",
+        "documentation": {}
+    }
+]
