@@ -96,6 +96,14 @@
         "documentation": {}
     },
     {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
         "label": "List",
         "importPath": "typing",
         "description": "typing",
@@ -809,7 +817,7 @@
         "kind": 6,
         "importPath": "models.CrossEncoderRerankingModel",
         "description": "models.CrossEncoderRerankingModel",
-        "peekOfCode": "class CrossEncoderRerankRequestModel(BaseModel):\n    query: str\n    docs: list[str]\n    returnDocuments:bool = False\nclass CrossEncoderRerankItemModel(BaseModel):\n    index: int\n    doc: str\n    score: float\nclass CrossEncoderRerankResponseModel(BaseModel):\n    results: list[CrossEncoderRerankItemModel]",
+        "peekOfCode": "class CrossEncoderRerankRequestModel(BaseModel):\n    query: str\n    docs: list[str]\n    returnDocuments:bool = False\nclass CrossEncoderRerankItemModel(BaseModel):\n    index: int\n    doc: Optional[str]\n    score: float\nclass CrossEncoderRerankResponseModel(BaseModel):\n    results: list[CrossEncoderRerankItemModel]",
         "detail": "models.CrossEncoderRerankingModel",
         "documentation": {}
     },
@@ -818,7 +826,7 @@
         "kind": 6,
         "importPath": "models.CrossEncoderRerankingModel",
         "description": "models.CrossEncoderRerankingModel",
-        "peekOfCode": "class CrossEncoderRerankItemModel(BaseModel):\n    index: int\n    doc: str\n    score: float\nclass CrossEncoderRerankResponseModel(BaseModel):\n    results: list[CrossEncoderRerankItemModel]\n    query: str",
+        "peekOfCode": "class CrossEncoderRerankItemModel(BaseModel):\n    index: int\n    doc: Optional[str]\n    score: float\nclass CrossEncoderRerankResponseModel(BaseModel):\n    results: list[CrossEncoderRerankItemModel]\n    query: str",
         "detail": "models.CrossEncoderRerankingModel",
         "documentation": {}
     },

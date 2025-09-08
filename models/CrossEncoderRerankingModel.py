@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-
+from typing import Optional
 
 
 class CrossEncoderRerankRequestModel(BaseModel):
@@ -10,7 +10,7 @@ class CrossEncoderRerankRequestModel(BaseModel):
 
 class CrossEncoderRerankItemModel(BaseModel):
     index: int
-    doc: str
+    doc: Optional[str]
     score: float
 
 
