@@ -2,9 +2,7 @@ from typing import cast, Any, Dict, List, Tuple
 import torch
 import asyncio
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
-from services.CrossEncoderRerankerBatcherService import (
-    CrossEncoderRerankerBatcherService,
-)
+from services.CrossEncoderRerankerBatcherService import CrossEncoderRerankerBatcherService
 from implementations import CrossEncoderRerankerServiceImpl
 
 modelName: str = "ncbi/MedCPT-Cross-Encoder"
@@ -17,13 +15,10 @@ tokenizer: Any = None
 model: Any = None
 keepaliveTask: Any = None
 
-
 class CrossEncoderRerankerService(CrossEncoderRerankerServiceImpl):
     def __init__(self):
-        self.batcher: CrossEncoderRerankerBatcherService = (
-            CrossEncoderRerankerBatcherService(
-                self.Score, maxBatchSize=100, maxDelayMs=5
-            )
+        self.batcher: CrossEncoderRerankerBatcherService = CrossEncoderRerankerBatcherService(
+            self.Score, maxBatchSize=100, maxDelayMs=5
         )
         self._initialized = False
         self._lock = asyncio.Lock()
@@ -38,9 +33,7 @@ class CrossEncoderRerankerService(CrossEncoderRerankerServiceImpl):
             if tokenizer is not None and model is not None:
                 return
 
-            tokenizer = cast(Any, AutoTokenizer).from_pretrained(
-                modelName, use_fast=True
-            )
+            tokenizer = cast(Any, AutoTokenizer).from_pretrained(modelName, use_fast=True)
             dtype = torch.float16 if torch.cuda.is_available() else torch.float32
             model = cast(Any, AutoModelForSequenceClassification).from_pretrained(
                 modelName, torch_dtype=dtype
@@ -98,7 +91,11 @@ class CrossEncoderRerankerService(CrossEncoderRerankerServiceImpl):
 
         with torch.inference_mode():
             outputs = model(**inputs)
-            scores = outputs.logits.softmax(dim=-1)[:, 1].cpu()
+            logits = outputs.logits
+            if logits.shape[-1] == 1:
+                scores = torch.sigmoid(logits).squeeze(-1).cpu()  # Sigmoid for single logit
+            else:
+                scores = logits.softmax(dim=-1)[:, 1].cpu()  # Softmax for binary logits
 
         result: List[float] = scores.detach().to("cpu", non_blocking=True).tolist()
         return result

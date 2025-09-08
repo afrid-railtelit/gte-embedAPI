@@ -881,7 +881,7 @@
         "kind": 6,
         "importPath": "services.CrossEncoderRerankerService",
         "description": "services.CrossEncoderRerankerService",
-        "peekOfCode": "class CrossEncoderRerankerService(CrossEncoderRerankerServiceImpl):\n    def __init__(self):\n        self.batcher: CrossEncoderRerankerBatcherService = (\n            CrossEncoderRerankerBatcherService(\n                self.Score, maxBatchSize=100, maxDelayMs=5\n            )\n        )\n        self._initialized = False\n        self._lock = asyncio.Lock()\n    async def LoadModel(self) -> None:",
+        "peekOfCode": "class CrossEncoderRerankerService(CrossEncoderRerankerServiceImpl):\n    def __init__(self):\n        self.batcher: CrossEncoderRerankerBatcherService = CrossEncoderRerankerBatcherService(\n            self.Score, maxBatchSize=100, maxDelayMs=5\n        )\n        self._initialized = False\n        self._lock = asyncio.Lock()\n    async def LoadModel(self) -> None:\n        async with self._lock:\n            if self._initialized:",
         "detail": "services.CrossEncoderRerankerService",
         "documentation": {}
     },
