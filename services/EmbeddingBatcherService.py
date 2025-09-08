@@ -1,7 +1,8 @@
 import asyncio
 from typing import List, Any, Callable
 
-class GteEmbedBatcherService:
+
+class EmbeddingBatcherService:
     def __init__(
         self,
         callFn: Callable[[List[str]], List[Any]],
@@ -12,7 +13,7 @@ class GteEmbedBatcherService:
         self.maxBatchSize = maxBatchSize
         self.maxDelay = maxDelayMs / 1000.0
         self.queue: Any = asyncio.Queue()
-        self.task = None 
+        self.task = None
 
     async def start(self):
         if self.task is None:

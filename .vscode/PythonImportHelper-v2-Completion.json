@@ -40,6 +40,78 @@
         "documentation": {}
     },
     {
+        "label": "Tuple",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Callable",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "cast",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Tuple",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
         "label": "Any",
         "importPath": "typing",
         "description": "typing",
@@ -160,7 +232,7 @@
         "documentation": {}
     },
     {
-        "label": "EmbedResultModel",
+        "label": "EmbeddingResponseModel",
         "importPath": "models",
         "description": "models",
         "isExtraImport": true,
@@ -176,7 +248,7 @@
         "documentation": {}
     },
     {
-        "label": "GteEmbedService",
+        "label": "EmbeddingService",
         "importPath": "services",
         "description": "services",
         "isExtraImport": true,
@@ -184,7 +256,7 @@
         "documentation": {}
     },
     {
-        "label": "GteEmbedService",
+        "label": "EmbeddingService",
         "importPath": "services",
         "description": "services",
         "isExtraImport": true,
@@ -192,7 +264,15 @@
         "documentation": {}
     },
     {
-        "label": "GteEmbedControllerImpl",
+        "label": "CrossEncoderRerankerService",
+        "importPath": "services",
+        "description": "services",
+        "isExtraImport": true,
+        "detail": "services",
+        "documentation": {}
+    },
+    {
+        "label": "EmbeddingControllerImpl",
         "importPath": "implementations",
         "description": "implementations",
         "isExtraImport": true,
@@ -200,7 +280,7 @@
         "documentation": {}
     },
     {
-        "label": "GteEmbedServiceImpl",
+        "label": "EmbeddingServiceImpl",
         "importPath": "implementations",
         "description": "implementations",
         "isExtraImport": true,
@@ -274,6 +354,22 @@
         "documentation": {}
     },
     {
+        "label": "AutoModelForSequenceClassification",
+        "importPath": "transformers",
+        "description": "transformers",
+        "isExtraImport": true,
+        "detail": "transformers",
+        "documentation": {}
+    },
+    {
+        "label": "AutoTokenizer",
+        "importPath": "transformers",
+        "description": "transformers",
+        "isExtraImport": true,
+        "detail": "transformers",
+        "documentation": {}
+    },
+    {
         "label": "AutoModel",
         "importPath": "transformers",
         "description": "transformers",
@@ -290,11 +386,19 @@
         "documentation": {}
     },
     {
-        "label": "GteEmbedBatcherService",
-        "importPath": "services.GteEmbedBatcherService",
-        "description": "services.GteEmbedBatcherService",
+        "label": "CrossEncoderRerankerBatcherService",
+        "importPath": "services.CrossEncoderRerankerBatcherService",
+        "description": "services.CrossEncoderRerankerBatcherService",
         "isExtraImport": true,
-        "detail": "services.GteEmbedBatcherService",
+        "detail": "services.CrossEncoderRerankerBatcherService",
+        "documentation": {}
+    },
+    {
+        "label": "EmbeddingBatcherService",
+        "importPath": "services.EmbeddingBatcherService",
+        "description": "services.EmbeddingBatcherService",
+        "isExtraImport": true,
+        "detail": "services.EmbeddingBatcherService",
         "documentation": {}
     },
     {
@@ -350,10 +454,10 @@
     {
         "label": "EmbedController",
         "kind": 6,
-        "importPath": "controllers.GteEmbedController",
-        "description": "controllers.GteEmbedController",
-        "peekOfCode": "class EmbedController(GteEmbedControllerImpl):\n    def __init__(self, service: GteEmbedService):\n        self.service = service\n        self.router = APIRouter()\n        self.router.add_api_route(\"/embed\", self.EmbedAPI, methods=[\"POST\"])\n    async def EmbedAPI(self, request: Request) -> JSONResponse:\n        try:\n            payload = await request.json()\n            req = EmbedRequestModel.model_validate(payload)\n        except Exception as exc:",
-        "detail": "controllers.GteEmbedController",
+        "importPath": "controllers.EmbeddingController",
+        "description": "controllers.EmbeddingController",
+        "peekOfCode": "class EmbedController(EmbeddingControllerImpl):\n    def __init__(self, service: EmbeddingService):\n        self.service = service\n        self.router = APIRouter()\n        self.router.add_api_route(\"/embed\", self.EmbedAPI, methods=[\"POST\"])\n    async def EmbedAPI(self, request: Request) -> JSONResponse:\n        try:\n            payload = await request.json()\n            req = EmbedRequestModel.model_validate(payload)\n        except Exception as exc:",
+        "detail": "controllers.EmbeddingController",
         "documentation": {}
     },
     {
@@ -366,75 +470,93 @@
         "documentation": {}
     },
     {
-        "label": "GteEmbedControllerImpl",
+        "label": "EmbeddingControllerImpl",
         "kind": 6,
-        "importPath": "implementations.GteEmbedControllerImpl",
-        "description": "implementations.GteEmbedControllerImpl",
-        "peekOfCode": "class GteEmbedControllerImpl(ABC):\n    @abstractmethod\n    async def EmbedAPI(self, request: Request) -> JSONResponse:\n        pass",
-        "detail": "implementations.GteEmbedControllerImpl",
+        "importPath": "implementations.EmbeddingControllerImpl",
+        "description": "implementations.EmbeddingControllerImpl",
+        "peekOfCode": "class EmbeddingControllerImpl(ABC):\n    @abstractmethod\n    async def EmbedAPI(self, request: Request) -> JSONResponse:\n        pass",
+        "detail": "implementations.EmbeddingControllerImpl",
         "documentation": {}
     },
     {
-        "label": "GteEmbedServiceImpl",
+        "label": "EmbeddingServiceImpl",
         "kind": 6,
-        "importPath": "implementations.GteEmbedServiceImpl",
-        "description": "implementations.GteEmbedServiceImpl",
-        "peekOfCode": "class GteEmbedServiceImpl(ABC):\n    @abstractmethod\n    def LoadModel(self) -> None:\n        pass\n    @abstractmethod\n    def MeanPool(self, lastHidden: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:\n        pass\n    @abstractmethod\n    def Embed(self, texts: List[str]) -> List[List[float]]:\n        pass",
-        "detail": "implementations.GteEmbedServiceImpl",
+        "importPath": "implementations.EmbeddingServiceImpl",
+        "description": "implementations.EmbeddingServiceImpl",
+        "peekOfCode": "class EmbeddingServiceImpl(ABC):\n    @abstractmethod\n    def LoadModel(self) -> None:\n        pass\n    @abstractmethod\n    def MeanPool(self, lastHidden: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:\n        pass\n    @abstractmethod\n    def Embed(self, texts: List[str]) -> List[List[float]]:\n        pass",
+        "detail": "implementations.EmbeddingServiceImpl",
         "documentation": {}
     },
     {
         "label": "EmbedRequestModel",
         "kind": 6,
-        "importPath": "models.GteEmbedModels",
-        "description": "models.GteEmbedModels",
-        "peekOfCode": "class EmbedRequestModel(BaseModel):\n    texts: List[str] = []\nclass EmbeddingItemModel(BaseModel):\n    index: int\n    embedding: List[float]\nclass EmbedResultModel(BaseModel):\n    results: List[EmbeddingItemModel]\n    dim: int\n    modelLatencyMs: float\nclass ErrorResponseModel(BaseModel):",
-        "detail": "models.GteEmbedModels",
+        "importPath": "models.EmbeddingServiceModels",
+        "description": "models.EmbeddingServiceModels",
+        "peekOfCode": "class EmbedRequestModel(BaseModel):\n    texts: List[str] = []\nclass EmbeddingItemModel(BaseModel):\n    index: int\n    embedding: List[float]\nclass EmbeddingResponseModel(BaseModel):\n    results: List[EmbeddingItemModel]\n    dim: int\nclass ErrorResponseModel(BaseModel):\n    status: str",
+        "detail": "models.EmbeddingServiceModels",
         "documentation": {}
     },
     {
         "label": "EmbeddingItemModel",
         "kind": 6,
-        "importPath": "models.GteEmbedModels",
-        "description": "models.GteEmbedModels",
-        "peekOfCode": "class EmbeddingItemModel(BaseModel):\n    index: int\n    embedding: List[float]\nclass EmbedResultModel(BaseModel):\n    results: List[EmbeddingItemModel]\n    dim: int\n    modelLatencyMs: float\nclass ErrorResponseModel(BaseModel):\n    status: str\n    detail: str",
-        "detail": "models.GteEmbedModels",
+        "importPath": "models.EmbeddingServiceModels",
+        "description": "models.EmbeddingServiceModels",
+        "peekOfCode": "class EmbeddingItemModel(BaseModel):\n    index: int\n    embedding: List[float]\nclass EmbeddingResponseModel(BaseModel):\n    results: List[EmbeddingItemModel]\n    dim: int\nclass ErrorResponseModel(BaseModel):\n    status: str\n    detail: str",
+        "detail": "models.EmbeddingServiceModels",
         "documentation": {}
     },
     {
-        "label": "EmbedResultModel",
+        "label": "EmbeddingResponseModel",
         "kind": 6,
-        "importPath": "models.GteEmbedModels",
-        "description": "models.GteEmbedModels",
-        "peekOfCode": "class EmbedResultModel(BaseModel):\n    results: List[EmbeddingItemModel]\n    dim: int\n    modelLatencyMs: float\nclass ErrorResponseModel(BaseModel):\n    status: str\n    detail: str",
-        "detail": "models.GteEmbedModels",
+        "importPath": "models.EmbeddingServiceModels",
+        "description": "models.EmbeddingServiceModels",
+        "peekOfCode": "class EmbeddingResponseModel(BaseModel):\n    results: List[EmbeddingItemModel]\n    dim: int\nclass ErrorResponseModel(BaseModel):\n    status: str\n    detail: str",
+        "detail": "models.EmbeddingServiceModels",
         "documentation": {}
     },
     {
         "label": "ErrorResponseModel",
         "kind": 6,
-        "importPath": "models.GteEmbedModels",
-        "description": "models.GteEmbedModels",
+        "importPath": "models.EmbeddingServiceModels",
+        "description": "models.EmbeddingServiceModels",
         "peekOfCode": "class ErrorResponseModel(BaseModel):\n    status: str\n    detail: str",
-        "detail": "models.GteEmbedModels",
+        "detail": "models.EmbeddingServiceModels",
         "documentation": {}
     },
     {
-        "label": "GteEmbedBatcherService",
+        "label": "CrossEncoderRerankerBatcherService",
         "kind": 6,
-        "importPath": "services.GteEmbedBatcherService",
-        "description": "services.GteEmbedBatcherService",
-        "peekOfCode": "class GteEmbedBatcherService:\n    def __init__(\n        self,\n        callFn: Callable[[List[str]], List[Any]],\n        maxBatchSize: int = 16,\n        maxDelayMs: int = 10,\n    ):\n        self.callFn = callFn\n        self.maxBatchSize = maxBatchSize\n        self.maxDelay = maxDelayMs / 1000.0",
-        "detail": "services.GteEmbedBatcherService",
+        "importPath": "services.CrossEncoderRerankerBatcherService",
+        "description": "services.CrossEncoderRerankerBatcherService",
+        "peekOfCode": "class CrossEncoderRerankerBatcherService:\n    def __init__(\n        self,\n        callFn: Callable[[List[Tuple[str, str]]], List[float]],\n        maxBatchSize: int = 50,\n        maxDelayMs: int = 5,\n    ):\n        self.callFn = callFn\n        self.maxBatchSize = maxBatchSize\n        self.maxDelay = maxDelayMs / 1000.0",
+        "detail": "services.CrossEncoderRerankerBatcherService",
         "documentation": {}
     },
     {
-        "label": "GteEmbedService",
+        "label": "CrossEncoderRerankerService",
         "kind": 6,
-        "importPath": "services.GteEmbedService",
-        "description": "services.GteEmbedService",
-        "peekOfCode": "class GteEmbedService(GteEmbedServiceImpl):\n    def LoadModel(self) -> None:\n        torch.backends.cudnn.benchmark = True\n        global tokenizer, model, keepaliveTask\n        if tokenizer is not None and model is not None:\n            return\n        tokenizer = cast(Any, AutoTokenizer).from_pretrained(modelName, use_fast=True)\n        dtype = torch.float16 if torch.cuda.is_available() else torch.float32\n        model = cast(Any, AutoModel).from_pretrained(modelName, dtype=dtype)\n        if torch.cuda.is_available():",
-        "detail": "services.GteEmbedService",
+        "importPath": "services.CrossEncoderRerankerService",
+        "description": "services.CrossEncoderRerankerService",
+        "peekOfCode": "class CrossEncoderRerankerService:\n    def __init__(self):\n        self.batcher: CrossEncoderRerankerBatcherService = (\n            CrossEncoderRerankerBatcherService(\n                self.Score, maxBatchSize=100, maxDelayMs=5\n            )\n        )\n        self._initialized = False\n        self._lock = asyncio.Lock()\n    async def LoadModel(self) -> None:",
+        "detail": "services.CrossEncoderRerankerService",
+        "documentation": {}
+    },
+    {
+        "label": "EmbeddingBatcherService",
+        "kind": 6,
+        "importPath": "services.EmbeddingBatcherService",
+        "description": "services.EmbeddingBatcherService",
+        "peekOfCode": "class EmbeddingBatcherService:\n    def __init__(\n        self,\n        callFn: Callable[[List[str]], List[Any]],\n        maxBatchSize: int = 16,\n        maxDelayMs: int = 10,\n    ):\n        self.callFn = callFn\n        self.maxBatchSize = maxBatchSize\n        self.maxDelay = maxDelayMs / 1000.0",
+        "detail": "services.EmbeddingBatcherService",
+        "documentation": {}
+    },
+    {
+        "label": "EmbeddingService",
+        "kind": 6,
+        "importPath": "services.EmbeddingService",
+        "description": "services.EmbeddingService",
+        "peekOfCode": "class EmbeddingService(EmbeddingServiceImpl):\n    def LoadModel(self) -> None:\n        torch.backends.cudnn.benchmark = True\n        global tokenizer, model, keepaliveTask\n        if tokenizer is not None and model is not None:\n            return\n        tokenizer = cast(Any, AutoTokenizer).from_pretrained(modelName, use_fast=True)\n        dtype = torch.float16 if torch.cuda.is_available() else torch.float32\n        model = cast(Any, AutoModel).from_pretrained(modelName, dtype=dtype)\n        if torch.cuda.is_available():",
+        "detail": "services.EmbeddingService",
         "documentation": {}
     },
     {
@@ -442,7 +564,7 @@
         "kind": 5,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "port = int(os.getenv(\"PORT\", \"8000\"))\nservice = GteEmbedService()\ncontroller = EmbedController(service)\n@asynccontextmanager\nasync def lifespan(app: FastAPI):\n    await asyncio.to_thread(service.LoadModel)\n    await service.batcher.start()\n    try:\n        if (\n            torch.cuda.is_available()",
+        "peekOfCode": "port = int(os.getenv(\"PORT\", \"8000\"))\nservice = EmbeddingService()\nrerankerService = CrossEncoderRerankerService()\ncontroller = EmbedController(service)\n@asynccontextmanager\nasync def lifespan(app: FastAPI):\n    await asyncio.to_thread(service.LoadModel)\n    await asyncio.to_thread(rerankerService.LoadModel)\n    await service.batcher.start()\n    await rerankerService.batcher.start()",
         "detail": "main",
         "documentation": {}
     },
@@ -451,7 +573,16 @@
         "kind": 5,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "service = GteEmbedService()\ncontroller = EmbedController(service)\n@asynccontextmanager\nasync def lifespan(app: FastAPI):\n    await asyncio.to_thread(service.LoadModel)\n    await service.batcher.start()\n    try:\n        if (\n            torch.cuda.is_available()\n            and getattr(__import__(\"services\").GteEmbedService, \"keepaliveTask\", None)",
+        "peekOfCode": "service = EmbeddingService()\nrerankerService = CrossEncoderRerankerService()\ncontroller = EmbedController(service)\n@asynccontextmanager\nasync def lifespan(app: FastAPI):\n    await asyncio.to_thread(service.LoadModel)\n    await asyncio.to_thread(rerankerService.LoadModel)\n    await service.batcher.start()\n    await rerankerService.batcher.start()\n    try:",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "rerankerService",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "rerankerService = CrossEncoderRerankerService()\ncontroller = EmbedController(service)\n@asynccontextmanager\nasync def lifespan(app: FastAPI):\n    await asyncio.to_thread(service.LoadModel)\n    await asyncio.to_thread(rerankerService.LoadModel)\n    await service.batcher.start()\n    await rerankerService.batcher.start()\n    try:\n        if (",
         "detail": "main",
         "documentation": {}
     },
@@ -460,7 +591,7 @@
         "kind": 5,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "controller = EmbedController(service)\n@asynccontextmanager\nasync def lifespan(app: FastAPI):\n    await asyncio.to_thread(service.LoadModel)\n    await service.batcher.start()\n    try:\n        if (\n            torch.cuda.is_available()\n            and getattr(__import__(\"services\").GteEmbedService, \"keepaliveTask\", None)\n            is None",
+        "peekOfCode": "controller = EmbedController(service)\n@asynccontextmanager\nasync def lifespan(app: FastAPI):\n    await asyncio.to_thread(service.LoadModel)\n    await asyncio.to_thread(rerankerService.LoadModel)\n    await service.batcher.start()\n    await rerankerService.batcher.start()\n    try:\n        if (\n            torch.cuda.is_available()",
         "detail": "main",
         "documentation": {}
     },

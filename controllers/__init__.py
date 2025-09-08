@@ -1,4 +1,4 @@
-from .GteEmbedController import EmbedController
+from .EmbeddingController import EmbedController
 
 
 __all__ = [

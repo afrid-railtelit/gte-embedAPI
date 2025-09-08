@@ -5,29 +5,32 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.gzip import GZipMiddleware
 import torch
-from services import GteEmbedService
+from services import EmbeddingService, CrossEncoderRerankerService
 from controllers import EmbedController
 from fastapi.middleware.cors import CORSMiddleware
 
 port = int(os.getenv("PORT", "8000"))
 
-service = GteEmbedService()
+service = EmbeddingService()
+rerankerService = CrossEncoderRerankerService()
 controller = EmbedController(service)
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await asyncio.to_thread(service.LoadModel)
+    await asyncio.to_thread(rerankerService.LoadModel)
     await service.batcher.start()
+    await rerankerService.batcher.start()
 
     try:
         if (
             torch.cuda.is_available()
-            and getattr(__import__("services").GteEmbedService, "keepaliveTask", None)
+            and getattr(__import__("services").EmbeddingService, "keepaliveTask", None)
             is None
         ):
             loop = asyncio.get_running_loop()
-            __import__("services").GteEmbedService.keepaliveTask = loop.create_task(
+            __import__("services").EmbeddingService.keepaliveTask = loop.create_task(
                 service.GpuKeepAlive()
             )
     except Exception:
@@ -38,6 +41,8 @@ async def lifespan(app: FastAPI):
     finally:
         if service.batcher.task is not None:
             service.batcher.task.cancel()
+        if rerankerService.batcher.task is not None:
+            rerankerService.batcher.task.cancel()
 
 
 app = FastAPI(lifespan=lifespan)

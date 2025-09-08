@@ -3,8 +3,8 @@ from typing import Any, Dict, List, cast
 
 import torch
 from transformers import AutoModel, AutoTokenizer
-from implementations import GteEmbedServiceImpl
-from services.GteEmbedBatcherService import GteEmbedBatcherService
+from implementations import EmbeddingServiceImpl
+from services.EmbeddingBatcherService import EmbeddingBatcherService
 
 # modelName: str = "thenlper/gte-base"
 modelName: str = "abhinand/MedEmbed-large-v0.1"
@@ -18,7 +18,7 @@ model: Any = None
 keepaliveTask: Any = None
 
 
-class GteEmbedService(GteEmbedServiceImpl):
+class EmbeddingService(EmbeddingServiceImpl):
     def LoadModel(self) -> None:
         torch.backends.cudnn.benchmark = True
         global tokenizer, model, keepaliveTask
@@ -48,7 +48,7 @@ class GteEmbedService(GteEmbedServiceImpl):
                 torch.cuda.synchronize()
         
 
-        self.batcher = GteEmbedBatcherService(self.Embed, maxBatchSize=50, maxDelayMs=5)
+        self.batcher = EmbeddingBatcherService(self.Embed, maxBatchSize=50, maxDelayMs=5)
 
     def MeanPool(self, lastHidden: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
         m = mask.unsqueeze(-1).expand(lastHidden.size()).float()

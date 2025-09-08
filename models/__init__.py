@@ -1,7 +1,7 @@
-from .GteEmbedModels import (
+from .EmbeddingServiceModels import (
     EmbeddingItemModel,
     EmbedRequestModel,
-    EmbedResultModel,
+    EmbeddingResponseModel,
     ErrorResponseModel,
 )
 
@@ -9,6 +9,6 @@ from .GteEmbedModels import (
 __all__ = [
     "EmbeddingItemModel",
     "EmbedRequestModel",
-    "EmbedResultModel",
+    "EmbeddingResponseModel",
     "ErrorResponseModel",
 ]

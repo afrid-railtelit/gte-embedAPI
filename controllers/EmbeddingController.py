@@ -6,15 +6,15 @@ from enums import ResponseStatusEnum
 from models import (
     EmbedRequestModel,
     EmbeddingItemModel,
-    EmbedResultModel,
+    EmbeddingResponseModel,
     ErrorResponseModel,
 )
-from services import GteEmbedService
-from implementations import GteEmbedControllerImpl
+from services import EmbeddingService
+from implementations import EmbeddingControllerImpl
 
 
-class EmbedController(GteEmbedControllerImpl):
-    def __init__(self, service: GteEmbedService):
+class EmbedController(EmbeddingControllerImpl):
+    def __init__(self, service: EmbeddingService):
         self.service = service
         self.router = APIRouter()
         self.router.add_api_route("/embed", self.EmbedAPI, methods=["POST"])
@@ -35,9 +35,7 @@ class EmbedController(GteEmbedControllerImpl):
             items: List[Any] = []
             for i, emb in enumerate(embeddings):
                 items.append(EmbeddingItemModel(index=i, embedding=emb).model_dump())
-            resp = EmbedResultModel(
-                results=items, dim=len(embeddings[0]), modelLatencyMs=0.0
-            )
+            resp = EmbeddingResponseModel(results=items, dim=len(embeddings[0]) )
             return JSONResponse(status_code=200, content=resp.model_dump())
         except ValueError as exc:
             err = ErrorResponseModel(

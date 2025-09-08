@@ -11,10 +11,9 @@ class EmbeddingItemModel(BaseModel):
     embedding: List[float]
 
 
-class EmbedResultModel(BaseModel):
+class EmbeddingResponseModel(BaseModel):
     results: List[EmbeddingItemModel]
     dim: int
-    modelLatencyMs: float
 
 
 class ErrorResponseModel(BaseModel):

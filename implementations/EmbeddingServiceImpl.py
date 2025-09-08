@@ -3,7 +3,7 @@ import torch
 from typing import  List
 
 
-class GteEmbedServiceImpl(ABC):
+class EmbeddingServiceImpl(ABC):
     @abstractmethod
     def LoadModel(self) -> None:
         pass

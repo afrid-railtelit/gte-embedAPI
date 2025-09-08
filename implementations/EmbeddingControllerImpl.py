@@ -3,7 +3,7 @@ from fastapi import Request
 from fastapi.responses import JSONResponse
 
 
-class GteEmbedControllerImpl(ABC):
+class EmbeddingControllerImpl(ABC):
 
     @abstractmethod
     async def EmbedAPI(self, request: Request) -> JSONResponse:

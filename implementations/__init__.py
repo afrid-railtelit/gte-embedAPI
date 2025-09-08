@@ -1,7 +1,7 @@
-from .GteEmbedServiceImpl import GteEmbedServiceImpl
-from .GteEmbedControllerImpl import GteEmbedControllerImpl
+from .EmbeddingServiceImpl import EmbeddingServiceImpl
+from .EmbeddingControllerImpl import EmbeddingControllerImpl
 
 __all__ = [
-    "GteEmbedServiceImpl",
-    "GteEmbedControllerImpl"
+    "EmbeddingServiceImpl",
+    "EmbeddingControllerImpl"
 ]

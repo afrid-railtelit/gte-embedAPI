@@ -1,5 +1,4 @@
-from .GteEmbedService import GteEmbedService
+from .EmbeddingService import EmbeddingService
+from .CrossEncoderRerankerService import CrossEncoderRerankerService
 
-__all__ = [
-    "GteEmbedService"
-]
+__all__ = ["EmbeddingService", "CrossEncoderRerankerService"]
