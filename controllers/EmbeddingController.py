@@ -35,7 +35,7 @@ class EmbeddingController(EmbeddingControllerImpl):
             items: List[Any] = []
             for i, emb in enumerate(embeddings):
                 items.append(EmbeddingItemModel(index=i, embedding=emb).model_dump())
-            resp = EmbeddingControllerResponseModel(results=items, dim=len(embeddings[0]) )
+            resp = EmbeddingControllerResponseModel(embeddings=items, dimensions=len(embeddings[0]) )
             return JSONResponse(status_code=200, content=resp.model_dump())
         except ValueError as exc:
             err = ErrorResponseModel(

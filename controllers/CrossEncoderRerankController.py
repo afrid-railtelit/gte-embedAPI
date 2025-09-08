@@ -39,10 +39,10 @@ class CrossEncoderRerankController(CrossEncoderRerankControllerImpl):
             for index, (docIndex, doc, score) in enumerate(ranked_results):
                 if returnDocs:
                     item = CrossEncoderRerankItemModel(
-                        index=docIndex, doc=doc, score=score
+                        docIndex=docIndex, doctext=doc, score=score
                     )
                 else:
-                    item = CrossEncoderRerankItemModel(index=docIndex, score=score)
+                    item = CrossEncoderRerankItemModel(docIndex=docIndex, score=score)
                 items.append(item)
                 if index == topN - 1:
                     break

@@ -9,8 +9,8 @@ class CrossEncoderRerankRequestModel(BaseModel):
 
 
 class CrossEncoderRerankItemModel(BaseModel):
-    index: int
-    doc: str | None = None
+    docIndex: int
+    doctext: str | None = None
     score: float
 
 

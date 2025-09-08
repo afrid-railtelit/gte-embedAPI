@@ -12,8 +12,8 @@ class EmbeddingItemModel(BaseModel):
 
 
 class EmbeddingControllerResponseModel(BaseModel):
-    results: List[EmbeddingItemModel]
-    dim: int
+    embeddings: List[EmbeddingItemModel]
+    dimensions: int
 
 
 class ErrorResponseModel(BaseModel):

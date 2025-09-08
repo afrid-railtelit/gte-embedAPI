@@ -8,10 +8,14 @@ from services.CrossEncoderRerankerBatcherService import (
 from implementations import CrossEncoderRerankerServiceImpl
 from dotenv import load_dotenv
 import os
+import torch
+
 
 load_dotenv()
 
-modelName: str = os.getenv("CROSS_ENCODER_MODEL_NAME", "ncbi/MedCPT-Cross-Encoder")
+modelName: str = os.getenv(
+    "CROSS_ENCODER_MODEL_NAME", "cross-encoder/ms-marco-MiniLM-L6-v2"
+)
 maxLength: int = int(os.getenv("MAX_TOKEN_LIMIT_PER_TEXT", 512))
 maxPairs: int = int(os.getenv("MAX_RE_RANKER_PAIRS", 200))
 device: torch.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -81,12 +85,15 @@ class CrossEncoderRerankerService(CrossEncoderRerankerServiceImpl):
                 await self.LoadModel()
             return await self.batcher.submit(pairs)
 
-    def Score(self, pairs: List[Tuple[str, str]]) -> List[float]:
+    def Score(
+        self, pairs: List[Tuple[str, str]], mode: str = "prob", temp: float = 1.0
+    ) -> List[float]:
         if not pairs:
             raise ValueError("pairs empty")
         if len(pairs) > maxPairs:
             raise ValueError(f"pairs length exceeds {maxPairs}")
-        tok: Dict[str, torch.Tensor] = tokenizer(
+
+        tok = tokenizer(
             pairs,
             return_tensors="pt",
             truncation=True,
@@ -94,18 +101,48 @@ class CrossEncoderRerankerService(CrossEncoderRerankerServiceImpl):
             padding=True,
         )
         tok = {k: v.pin_memory() for k, v in tok.items()}
+        inputs = {k: v.to(device, non_blocking=True) for k, v in tok.items()}
 
-        inputs: Dict[str, torch.Tensor] = {
-            k: v.to(device, non_blocking=True) for k, v in tok.items()
-        }
         with torch.inference_mode():
             outputs = model(**inputs)
-            logits = outputs.logits
-            if logits.shape[-1] == 1:
-                scores = torch.sigmoid(logits).squeeze(-1).cpu()
+            logits = getattr(outputs, "logits", None)
+
+            if logits is not None:
+                if logits.shape[-1] == 1:
+                    raw = torch.sigmoid(logits.squeeze(-1) / float(temp)).cpu()
+                else:
+                    probs = logits.softmax(dim=-1)
+                    raw = probs[:, 1].cpu()
+                scores = raw.detach().to("cpu", non_blocking=True).float()
             else:
-                scores = logits.softmax(dim=-1)[:, 1].cpu()
-        return cast(Any, scores).detach().to("cpu", non_blocking=True).tolist()
+                maybe = None
+                for name in ("scores", "score", "logits", "predictions"):
+                    maybe = getattr(outputs, name, None)
+                    if maybe is not None:
+                        break
+                if maybe is None:
+                    if isinstance(outputs, torch.Tensor):
+                        maybe = outputs
+                    elif (
+                        isinstance(outputs, (list, tuple))
+                        and len(cast(Any, outputs)) > 0
+                        and isinstance(outputs[0], torch.Tensor)
+                    ):
+                        maybe = outputs[0]
+                    else:
+                        raise ValueError("Couldn't find score/logits in model output")
+                raw_tensor = maybe.squeeze().cpu().float()
+                if mode == "prob":
+                    scores = torch.sigmoid(raw_tensor / float(temp))
+                else:
+                    mn = raw_tensor.min()
+                    mx = raw_tensor.max()
+                    if mx == mn:
+                        scores = torch.zeros_like(raw_tensor)
+                    else:
+                        scores = (raw_tensor - mn) / (mx - mn)
+
+        return cast(Any, scores).tolist()
 
     async def Rerank(self, query: str, docs: List[str]) -> List[Tuple[int, str, float]]:
         if not docs:

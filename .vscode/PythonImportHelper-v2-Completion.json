@@ -833,7 +833,7 @@
         "kind": 6,
         "importPath": "models.CrossEncoderRerankingModel",
         "description": "models.CrossEncoderRerankingModel",
-        "peekOfCode": "class CrossEncoderRerankRequestModel(BaseModel):\n    query: str\n    docs: list[str]\n    returnDocuments: bool = False\n    topN: int = 10\nclass CrossEncoderRerankItemModel(BaseModel):\n    index: int\n    doc: str | None = None\n    score: float\nclass CrossEncoderRerankResponseModel(BaseModel):",
+        "peekOfCode": "class CrossEncoderRerankRequestModel(BaseModel):\n    query: str\n    docs: list[str]\n    returnDocuments: bool = False\n    topN: int = 10\nclass CrossEncoderRerankItemModel(BaseModel):\n    docIndex: int\n    doctext: str | None = None\n    score: float\nclass CrossEncoderRerankResponseModel(BaseModel):",
         "detail": "models.CrossEncoderRerankingModel",
         "documentation": {}
     },
@@ -842,7 +842,7 @@
         "kind": 6,
         "importPath": "models.CrossEncoderRerankingModel",
         "description": "models.CrossEncoderRerankingModel",
-        "peekOfCode": "class CrossEncoderRerankItemModel(BaseModel):\n    index: int\n    doc: str | None = None\n    score: float\nclass CrossEncoderRerankResponseModel(BaseModel):\n    results: list[CrossEncoderRerankItemModel]\n    query: str",
+        "peekOfCode": "class CrossEncoderRerankItemModel(BaseModel):\n    docIndex: int\n    doctext: str | None = None\n    score: float\nclass CrossEncoderRerankResponseModel(BaseModel):\n    results: list[CrossEncoderRerankItemModel]\n    query: str",
         "detail": "models.CrossEncoderRerankingModel",
         "documentation": {}
     },
@@ -860,7 +860,7 @@
         "kind": 6,
         "importPath": "models.EmbeddingServiceModels",
         "description": "models.EmbeddingServiceModels",
-        "peekOfCode": "class EmbeddingControllerRequestModel(BaseModel):\n    texts: List[str] = []\nclass EmbeddingItemModel(BaseModel):\n    index: int\n    embedding: List[float]\nclass EmbeddingControllerResponseModel(BaseModel):\n    results: List[EmbeddingItemModel]\n    dim: int\nclass ErrorResponseModel(BaseModel):\n    status: str",
+        "peekOfCode": "class EmbeddingControllerRequestModel(BaseModel):\n    texts: List[str] = []\nclass EmbeddingItemModel(BaseModel):\n    index: int\n    embedding: List[float]\nclass EmbeddingControllerResponseModel(BaseModel):\n    embeddings: List[EmbeddingItemModel]\n    dimensions: int\nclass ErrorResponseModel(BaseModel):\n    status: str",
         "detail": "models.EmbeddingServiceModels",
         "documentation": {}
     },
@@ -869,7 +869,7 @@
         "kind": 6,
         "importPath": "models.EmbeddingServiceModels",
         "description": "models.EmbeddingServiceModels",
-        "peekOfCode": "class EmbeddingItemModel(BaseModel):\n    index: int\n    embedding: List[float]\nclass EmbeddingControllerResponseModel(BaseModel):\n    results: List[EmbeddingItemModel]\n    dim: int\nclass ErrorResponseModel(BaseModel):\n    status: str\n    detail: str",
+        "peekOfCode": "class EmbeddingItemModel(BaseModel):\n    index: int\n    embedding: List[float]\nclass EmbeddingControllerResponseModel(BaseModel):\n    embeddings: List[EmbeddingItemModel]\n    dimensions: int\nclass ErrorResponseModel(BaseModel):\n    status: str\n    detail: str",
         "detail": "models.EmbeddingServiceModels",
         "documentation": {}
     },
@@ -878,7 +878,7 @@
         "kind": 6,
         "importPath": "models.EmbeddingServiceModels",
         "description": "models.EmbeddingServiceModels",
-        "peekOfCode": "class EmbeddingControllerResponseModel(BaseModel):\n    results: List[EmbeddingItemModel]\n    dim: int\nclass ErrorResponseModel(BaseModel):\n    status: str\n    detail: str",
+        "peekOfCode": "class EmbeddingControllerResponseModel(BaseModel):\n    embeddings: List[EmbeddingItemModel]\n    dimensions: int\nclass ErrorResponseModel(BaseModel):\n    status: str\n    detail: str",
         "detail": "models.EmbeddingServiceModels",
         "documentation": {}
     },
