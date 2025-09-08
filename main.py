@@ -8,6 +8,9 @@ import torch
 from services import EmbeddingService, CrossEncoderRerankerService
 from controllers import EmbeddingController, CrossEncoderRerankController
 from fastapi.middleware.cors import CORSMiddleware
+from dotenv import load_dotenv
+
+load_dotenv()
 
 port = int(os.getenv("PORT", "8000"))
 

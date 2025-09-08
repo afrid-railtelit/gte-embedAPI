@@ -658,11 +658,27 @@
         "documentation": {}
     },
     {
-        "label": "EmbeddingBatcherService",
-        "importPath": "services.EmbeddingBatcherService",
-        "description": "services.EmbeddingBatcherService",
+        "label": "load_dotenv",
+        "importPath": "dotenv",
+        "description": "dotenv",
         "isExtraImport": true,
-        "detail": "services.EmbeddingBatcherService",
+        "detail": "dotenv",
+        "documentation": {}
+    },
+    {
+        "label": "load_dotenv",
+        "importPath": "dotenv",
+        "description": "dotenv",
+        "isExtraImport": true,
+        "detail": "dotenv",
+        "documentation": {}
+    },
+    {
+        "label": "load_dotenv",
+        "importPath": "dotenv",
+        "description": "dotenv",
+        "isExtraImport": true,
+        "detail": "dotenv",
         "documentation": {}
     },
     {
@@ -672,6 +688,14 @@
         "importPath": "os",
         "description": "os",
         "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "EmbeddingBatcherService",
+        "importPath": "services.EmbeddingBatcherService",
+        "description": "services.EmbeddingBatcherService",
+        "isExtraImport": true,
+        "detail": "services.EmbeddingBatcherService",
         "documentation": {}
     },
     {
@@ -881,7 +905,7 @@
         "kind": 6,
         "importPath": "services.CrossEncoderRerankerService",
         "description": "services.CrossEncoderRerankerService",
-        "peekOfCode": "class CrossEncoderRerankerService(CrossEncoderRerankerServiceImpl):\n    def __init__(self):\n        self.batcher: CrossEncoderRerankerBatcherService = (\n            CrossEncoderRerankerBatcherService(\n                self.Score, maxBatchSize=100, maxDelayMs=5\n            )\n        )\n        self._initialized = False\n        self._lock = asyncio.Lock()\n    async def LoadModel(self) -> None:",
+        "peekOfCode": "class CrossEncoderRerankerService(CrossEncoderRerankerServiceImpl):\n    def __init__(self):\n        self.batcher: CrossEncoderRerankerBatcherService = (\n            CrossEncoderRerankerBatcherService(\n                self.Score,\n                maxBatchSize=int(os.getenv(\"MAX_CE_RE_RANKER_BACTH_SIZE\", 100)),\n                maxDelayMs=int(os.getenv(\"MAX_CE_RE_RANKER_BACTH_REQUEST_DELAY\", 5)),\n            )\n        )\n        self._initialized = False",
         "detail": "services.CrossEncoderRerankerService",
         "documentation": {}
     },

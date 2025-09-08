@@ -6,13 +6,16 @@ from services.CrossEncoderRerankerBatcherService import (
     CrossEncoderRerankerBatcherService,
 )
 from implementations import CrossEncoderRerankerServiceImpl
+from dotenv import load_dotenv
+import os
 
-modelName: str = "ncbi/MedCPT-Cross-Encoder"
-maxLength: int = 512
-maxPairs: int = 200
+load_dotenv()
+
+modelName: str = os.getenv("CROSS_ENCODER_MODEL_NAME", "ncbi/MedCPT-Cross-Encoder")
+maxLength: int = int(os.getenv("MAX_TOKEN_LIMIT_PER_TEXT", 512))
+maxPairs: int = int(os.getenv("MAX_RE_RANKER_PAIRS", 200))
 device: torch.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 keepaliveInterval: float = 10
-
 tokenizer: Any = None
 model: Any = None
 keepaliveTask: Any = None
@@ -22,7 +25,9 @@ class CrossEncoderRerankerService(CrossEncoderRerankerServiceImpl):
     def __init__(self):
         self.batcher: CrossEncoderRerankerBatcherService = (
             CrossEncoderRerankerBatcherService(
-                self.Score, maxBatchSize=100, maxDelayMs=5
+                self.Score,
+                maxBatchSize=int(os.getenv("MAX_CE_RE_RANKER_BACTH_SIZE", 100)),
+                maxDelayMs=int(os.getenv("MAX_CE_RE_RANKER_BACTH_REQUEST_DELAY", 5)),
             )
         )
         self._initialized = False
@@ -51,7 +56,7 @@ class CrossEncoderRerankerService(CrossEncoderRerankerServiceImpl):
                 model = model.to(device)
             model.eval()
 
-            warmPair: Tuple[str, str] = ("hello query " * 8, "hello document " * 8)
+            warmPair: Tuple[str, str] = ("hello query " * 2, "hello document " * 2)
             tokWarm: Dict[str, torch.Tensor] = tokenizer(
                 [warmPair],
                 return_tensors="pt",

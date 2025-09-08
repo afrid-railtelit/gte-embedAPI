@@ -5,11 +5,15 @@ import torch
 from transformers import AutoModel, AutoTokenizer
 from implementations import EmbeddingServiceImpl
 from services.EmbeddingBatcherService import EmbeddingBatcherService
+import os
+from dotenv import load_dotenv
 
-# modelName: str = "thenlper/gte-base"
-modelName: str = "abhinand/MedEmbed-large-v0.1"
-maxLength: int = 500
-maxTexts: int = 100
+load_dotenv()
+
+
+modelName: str = os.getenv("EMBEDDING_MODEL_NAME", "thenlper/gte-large")
+maxLength: int = int(os.getenv("MAX_TOKEN_LIMIT_PER_TEXT", 500))
+maxTexts: int = int(os.getenv("MAX_EMBEDDING_TEXTS_PER_REQUEST", 100))
 device: torch.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 keepaliveInterval: float = 10
 
@@ -46,9 +50,12 @@ class EmbeddingService(EmbeddingServiceImpl):
             _ = model(**inputsWarm)
             if torch.cuda.is_available():
                 torch.cuda.synchronize()
-        
 
-        self.batcher = EmbeddingBatcherService(self.Embed, maxBatchSize=50, maxDelayMs=5)
+        self.batcher = EmbeddingBatcherService(
+            self.Embed,
+            maxBatchSize=int(os.getenv("MAX_EMBEDDING_BATCH_SIZE", 50)),
+            maxDelayMs=int(os.getenv("MAX_EMBEDDING_BATCH_REQUEST_DELAY", 5)),
+        )
 
     def MeanPool(self, lastHidden: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
         m = mask.unsqueeze(-1).expand(lastHidden.size()).float()
