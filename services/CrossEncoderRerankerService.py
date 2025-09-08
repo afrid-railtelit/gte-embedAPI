@@ -67,7 +67,6 @@ class CrossEncoderRerankerService(CrossEncoderRerankerServiceImpl):
                 _ = model(**inputsWarm)
                 if torch.cuda.is_available():
                     torch.cuda.synchronize()
-
             await self.batcher.start()
             self._initialized = True
 
@@ -82,7 +81,6 @@ class CrossEncoderRerankerService(CrossEncoderRerankerServiceImpl):
             raise ValueError("pairs empty")
         if len(pairs) > maxPairs:
             raise ValueError(f"pairs length exceeds {maxPairs}")
-
         tok: Dict[str, torch.Tensor] = tokenizer(
             pairs,
             return_tensors="pt",
@@ -95,30 +93,21 @@ class CrossEncoderRerankerService(CrossEncoderRerankerServiceImpl):
         inputs: Dict[str, torch.Tensor] = {
             k: v.to(device, non_blocking=True) for k, v in tok.items()
         }
-
         with torch.inference_mode():
             outputs = model(**inputs)
             logits = outputs.logits
             if logits.shape[-1] == 1:
-                scores = (
-                    torch.sigmoid(logits).squeeze(-1).cpu()
-                )  # Sigmoid for single logit
+                scores = torch.sigmoid(logits).squeeze(-1).cpu()
             else:
-                scores = logits.softmax(dim=-1)[:, 1].cpu()  # Softmax for binary logits
-
+                scores = logits.softmax(dim=-1)[:, 1].cpu()
         return cast(Any, scores).detach().to("cpu", non_blocking=True).tolist()
 
     async def Rerank(self, query: str, docs: List[str]) -> List[Tuple[int, str, float]]:
-
         if not docs:
             return []
-
         indices = list(range(len(docs)))
         pairs: List[Tuple[str, str]] = [(query, doc) for doc in docs]
-
         scores = await self.ScoreBatched(pairs)
-
         combined = list(zip(indices, docs, scores))
         combined.sort(key=lambda x: x[2], reverse=True)
-
         return combined
