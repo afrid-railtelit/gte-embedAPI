@@ -16,5 +16,5 @@ class CrossEncoderRerankerServiceImpl(ABC):
         pass
 
     @abstractmethod
-    async def Rerank(self, query: str, docs: List[str]) -> List[Tuple[str, str, float]]:
+    async def Rerank(self, query: str, docs: List[str]) -> List[Tuple[int, str, float]]:
         pass

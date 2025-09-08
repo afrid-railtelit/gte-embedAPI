@@ -31,16 +31,22 @@ class CrossEncoderRerankController(CrossEncoderRerankControllerImpl):
 
         query: str = req.query
         docs: List[str] = req.docs
+        returnDocs: bool = req.returnDocuments
         try:
             ranked_results = await self.service.Rerank(query, docs)
             items: List[Any] = []
-            for i, (query, doc, score) in enumerate(ranked_results):
+            for _, (docIndex, (query, doc), score) in enumerate(ranked_results):
                 items.append(
                     CrossEncoderRerankItemModel(
-                        index=i, query=query, doc=doc, score=score
+                        index=docIndex, doc=doc, score=score
                     ).model_dump()
                 )
-            resp = CrossEncoderRerankResponseModel(results=items)
+                if returnDocs:
+                    for item in items:
+                        if "doc" in item:
+                            del item["doc"]
+
+            resp = CrossEncoderRerankResponseModel(results=items, query=query)
             return JSONResponse(status_code=200, content=resp.model_dump())
         except ValueError as exc:
             err = ErrorResponseModel(
